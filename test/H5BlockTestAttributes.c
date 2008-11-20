@@ -33,7 +33,7 @@ _write_data (
 
 	printf ( "Writing Step #%lld\n", (long long)f->timestep );
 
-	data = malloc ( i_dims * j_dims * k_dims * sizeof ( *data ) );
+	data = (h5part_float64_t *) malloc ( i_dims * j_dims * k_dims * sizeof ( *data ) );
 	for ( i = 0; i < i_dims; i++ ) {
 		for ( j = 0; j < j_dims; j++ ) {
 			for ( k = 0; k < k_dims; k++ ) {
@@ -170,7 +170,7 @@ _read_data (
 
 	printf ( "Reading Step #%lld\n", (long long)f->timestep );
 
-	data = malloc ( i_dims * j_dims * k_dims * sizeof ( *data ) );
+	data = (h5part_float64_t *) malloc ( i_dims * j_dims * k_dims * sizeof ( *data ) );
 
 	herr = H5BlockDefine3DFieldLayout (
 		f,
@@ -179,7 +179,7 @@ _read_data (
 		layout->k_start, layout->k_end );
 	if ( herr < 0 ) return herr;
 
-	herr = H5Block3dReadScalarField ( f, "TestField", data );
+	herr =  H5Block3dReadScalarField ( f, "TestField", data );
 	if ( herr < 0 ) return herr;
 
 	for ( i = 0; i < i_dims; i++ ) {
