@@ -1,5 +1,6 @@
 * text=auto !eol
 /AUTHORS -text
+/COPYING -text
 /ChangeLog -text
 /GNUmakefile.orig -text
 /Makefile.am -text
