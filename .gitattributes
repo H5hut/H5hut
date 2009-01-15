@@ -3,6 +3,7 @@
 /COPYING -text
 /ChangeLog -text
 /GNUmakefile.orig -text
+/INSTALL -text
 /Makefile.am -text
 /Makefile.orig -text
 /NEWS -text
