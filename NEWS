@@ -12,12 +12,6 @@ read/write functions, using a new naming convention:
 
 The old functions still exist, but may be removed in the future.
 
-* Modified _write_data() in H5Block to write arbitrary data types.
-
-* Fixed a bug in the configure script which was preventing compiling
-the FORTRAN library on Cray XT4 architectures.
-
-* Fixed a bug in ./test/H5BlockTestAttributes.c
 
 VERSION 1.4.0
 *************
