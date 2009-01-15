@@ -1,3 +1,27 @@
+VERSION 1.4.1
+*************
+
+* Added support for HDF 1.8.1.
+
+* Added float32 and int64 versions of the H5Block scalar field
+read/write functions, using a new naming convention:
+        
+        H5Block3dWriteScalarFieldFloat64() (was H5Block3dWriteScalarField())
+        H5Block3dWriteScalarFieldFloat32() (new)
+        H5Block3dWriteScalarFieldInt64()   (new)
+
+The old functions still exist, but may be removed in the future.
+
+* Modified _write_data() in H5Block to write arbitrary data types.
+
+* Fixed a bug in the configure script which was preventing compiling
+the FORTRAN library on Cray XT4 architectures.
+
+* Fixed a bug in ./test/H5BlockTestAttributes.c
+
+VERSION 1.4.0
+*************
+
 Error Handling
 --------------
  Now all functions, in which an error could occure, are returning a
