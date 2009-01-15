@@ -11,6 +11,7 @@ typedef __int64			int64_t;
 
 typedef int64_t			h5part_int64_t;
 typedef double			h5part_float64_t;
+typedef float			h5part_float32_t;
 typedef h5part_int64_t (*h5part_error_handler)( const char*, const h5part_int64_t, const char*,...)
 #ifdef __GNUC__
 __attribute__ ((format (printf, 3, 4)))
