@@ -1,0 +1,24 @@
+2008-12-19  Mark Howison  <mhowison@lbl.gov>
+
+	* Added support for HDF 1.8.1.
+
+	* Added float32 and int64 versions of the H5Block scalar field
+	read/write functions, using a new naming convention: 
+        
+        H5Block3dWriteScalarFieldFloat64() (was H5Block3dWriteScalarField())
+        H5Block3dWriteScalarFieldFloat32() (new)
+        H5Block3dWriteScalarFieldInt64()   (new)
+
+	* Modified _write_data() in H5Block to write arbitrary data types.
+
+	* Fixed a bug in the configure script which was preventing
+	compilation of the FORTRAN library on Cray XT4 architectures.
+	
+	* Added the "--with-mpiposix" option to the configure script to enable
+	the MPI-POSIX VFD in the HDF5 layer.
+
+2008-11-20  Andreas Adelmann  <andreas.adelmann@psi.ch>
+
+	* Fixed a bug in ./test/H5BlockTestAttributes.c
+
+	
