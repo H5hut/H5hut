@@ -18,6 +18,7 @@ struct H5BlockStruct {
 	struct H5BlockPartition *user_layout;
 	struct H5BlockPartition *write_layout;
 	int have_layout;
+	hsize_t chunk[3];
 
 	hid_t shape;
 	hid_t memshape;
