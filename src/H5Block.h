@@ -54,10 +54,52 @@ H5Block3dGetProcOf (
 	);
 
 h5part_int64_t
+H5Block3dWriteScalarFieldFloat64 (
+	H5PartFile *f,
+	const char *name,
+	const h5part_float64_t *data
+	);
+
+h5part_int64_t
+H5Block3dWriteScalarFieldFloat32 (
+	H5PartFile *f,
+	const char *name,
+	const h5part_float32_t *data
+	);
+
+h5part_int64_t
+H5Block3dWriteScalarFieldInt64 (
+	H5PartFile *f,
+	const char *name,
+	const h5part_int64_t *data
+	);
+
+h5part_int64_t
 H5Block3dWriteScalarField (
 	H5PartFile *f,
 	const char *name,
 	const h5part_float64_t *data
+	);
+
+h5part_int64_t
+H5Block3dReadScalarFieldFloat64 (
+	H5PartFile *f,
+	const char *name,
+	h5part_float64_t *data
+	);
+
+h5part_int64_t
+H5Block3dReadScalarFieldFloat32 (
+	H5PartFile *f,
+	const char *name,
+	h5part_float32_t *data
+	);
+
+h5part_int64_t
+H5Block3dReadSclarFieldInt64 (
+	H5PartFile *f,
+	const char *name,
+	h5part_int64_t *data
 	);
 
 h5part_int64_t
