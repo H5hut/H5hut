@@ -695,9 +695,11 @@ _release_hyperslab (
   Define the field layout given the dense index space at the actual
   time step.
 
-  \return \c H5PART_SUCCESS on success<br>
-  \c H5PART_ERR_MPI<br>
-  \c H5PART_ERR_HDF5
+  \par Errors
+  \c H5PART_ERR_MPI on MPI errors
+  \c H5PART_ERR_HDF5 on HDF5 errors
+  
+  \return \c H5PART_SUCCESS on success or error code
 */
 h5part_int64_t
 H5BlockDefine3DFieldLayout(
@@ -746,7 +748,7 @@ H5BlockDefine3DFieldLayout(
   Define the chunk dimensions and enable chunking in the underlying
   HDF5 dataset.
 
-  \return \c H5PART_SUCCESS on success
+  \return \c H5PART_SUCCESS
 */
 h5part_int64_t
 H5BlockDefine3DChunk(
@@ -773,8 +775,10 @@ H5BlockDefine3DChunk(
   Return partition of processor \c proc as specified with
   \c H5BlockDefine3dLayout().
 
-  \return \c H5PART_SUCCESS on success.<br>
-	  \c H5PART_ERR_INVAL if proc is invalid.
+  \par Errors
+  \c H5PART_ERR_INVAL if proc is invalid.
+
+  \return \c H5PART_SUCCESS on success or error code
 */
 h5part_int64_t
 H5Block3dGetPartitionOfProc (
@@ -813,8 +817,11 @@ H5Block3dGetPartitionOfProc (
   Return reduced (ghost-zone free) partition of processor \c proc
   as specified with \c H5BlockDefine3dLayout().
 
-  \return \c H5PART_SUCCESS on success.<br>
-	  \c H5PART_ERR_INVAL if proc is invalid.
+  \par Errors
+  \c H5PART_ERR_LAYOUT if no partitioning defined
+  \c H5PART_ERR_INVAL if proc is invalid.
+
+  \return \c H5PART_SUCCESS on success or error code
 */
 h5part_int64_t
 H5Block3dGetReducedPartitionOfProc (
@@ -854,7 +861,11 @@ H5Block3dGetReducedPartitionOfProc (
   Returns the processor computing the reduced (ghostzone-free) 
   partition given by the coordinates \c i, \c j and \c k.
 
-  \return \c H5PART_SUCCESS or error code
+  \par Errors
+  \c H5PART_ERR_LAYOUT if no partitioning defined.
+  \c H5PART_ERR_INVAL if given point is not in a partition.
+
+  \return \c processor id or error code
 */
 h5part_int64_t
 H5Block3dGetProcOf (
@@ -878,7 +889,7 @@ H5Block3dGetProcOf (
 			return (h5part_int64_t)proc;
 	}
 	
-	return -1;
+	return H5PART_ERR_INVAL;
 }
 
 /********************** helper functions for reading and writing *************/
