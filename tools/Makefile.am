@@ -48,6 +48,13 @@ h5pToGNUplot_SOURCES = h5pToGNUplot.cc
 # Specific building instruction (What compilers to use...)
 # ------------ Build Tools ------------
 
+
+h5ToVtk.o: h5ToVtk.cc
+	$(TOOLS_CXX) $(CFLAGS) $(INC) -g -c h5ToVtk.cc
+
+h5ToVtk: h5ToVtk.o
+	$(TOOLS_CXX) -o h5ToVtk h5ToVtk.o $(H5PLIB) $(LIBS)
+
 h5pAttrib: h5pAttrib.o
 	$(TOOLS_CXX) -o h5pAttrib h5pAttrib.o $(H5PLIB) $(LIBS)
 

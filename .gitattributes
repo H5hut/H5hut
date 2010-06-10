@@ -56,6 +56,7 @@ test/H5testFpar.f90 -text
 test/Makefile.am -text
 tools/Makefile.am -text
 tools/README -text
+tools/h5ToVtk.cc -text
 tools/h5pAttrib.cc -text
 tools/h5pToGNUplot.cc -text
 tools/homdynToH5p.cc -text
