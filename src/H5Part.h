@@ -82,6 +82,14 @@ H5PartWriteDataFloat64 (
 	const h5part_float64_t *array
 	);
 
+
+h5part_int64_t
+H5PartWriteDataFloat32 (
+	H5PartFile *f,
+	const char *name,
+	const h5part_float32_t *array
+	);
+
 h5part_int64_t
 H5PartWriteDataInt64 (
 	H5PartFile *f,
@@ -170,6 +178,13 @@ H5PartReadDataFloat64(
 	H5PartFile *f,
 	const char *name,
 	h5part_float64_t *array
+	);
+
+h5part_int64_t
+H5PartReadDataFloat32(
+	H5PartFile *f,
+	const char *name,
+	h5part_float32_t *array
 	);
 
 h5part_int64_t
