@@ -1,7 +1,6 @@
-/* h5pToGNUplot.cc
-   Antino Kim
-   This utility will output a GNU Plot input file accodring to the flags provided from the command line.
-   The parser was imported from the example of h5dump utility with slight modifications.
+/* h5ToVtk.cc
+   Andreas Adelmann
+
 */
 
 #include <stdio.h>
@@ -29,13 +28,8 @@ static void print_help();
 static void variable_assign(int argc, const char *argv[]);
 
 /* Global variables */
-static char* var_1      = NULL;
-static char* var_2      = NULL;
 static char* input_name      = NULL;
 static char* output_name      = NULL;
-static char* timestep      = NULL;
-static char* start      = NULL;
-static char* npoints      = NULL;
 static int print_all = 0;
 
 /* `get_option' variables */
@@ -65,15 +59,11 @@ static const char *s_opts = "h1:2:i:o:n:t:s:";
 static struct long_options l_opts[] =
 {
     { "help", no_arg, 'h' },         // Print help page
-    { "1var", require_arg, '1' },         // Takes first variable parameter
-    { "2var", require_arg, '2' },        // Takes second variable parameter
     { "input", require_arg, 'i' },        // Takes input file name
     { "output", require_arg, 'o' },   // Takes output file name (without this flag, the program will print to stdout)
-    { "number", require_arg, 'n' }, // Sets number of output points
-    { "start", require_arg, 's' },  // Sets the starting particle index
-    { "timestep", require_arg, 't' },  // Sets the timestep
     { NULL, 0, '\0' }
 };
+
 
 
 /************************************************************************************
@@ -247,30 +237,11 @@ static void variable_assign(int argc, const char *argv[])
           case 'h': // Print help page
             print_help();
             exit(1);
-          case '1': // Print file attributes
-            var_1 = strdup(opt_arg);
-            break;
-          case '2': // Print step attributes & values for time step n
-            var_2 = strdup(opt_arg);
-            break;
-          case 'i': // Print data sets names & values for time step n
-            input_name = strdup(opt_arg);
-            break;
           case 'o': // Print number of steps
             output_name = strdup(opt_arg);
             break;
-          case 'n': // Print shorter version without the values
-            npoints = strdup(opt_arg);
-            break;
-          case 's': // Print shorter version without the values
-            start = strdup(opt_arg);
-            break;
-          case 't': // Print shorter version without the values
-            timestep = strdup(opt_arg);
-            if(atoi(timestep)==-1)
-            {
-               print_all = 1;
-            }
+          case 'i': // Print shorter version without the values
+            input_name = strdup(opt_arg);
             break;
           default:
             print_help();
@@ -283,29 +254,21 @@ static void variable_assign(int argc, const char *argv[])
 static void print_help()
 {
    fflush(stdout);
-   fprintf(stdout, "\nusage: h5pToGNUplot -t TIMESTEP -1 VARIABLE#1 -2 VARIABLE#2 -i INPUTFILE [OPTIONAL_FLAGS]\n");
+   fprintf(stdout, "\nusage: h5ToVtk  -i INPUTFILE -o OUTPUTFILE [OPTIONAL_FLAGS]\n");
    fprintf(stdout, "\n");
    fprintf(stdout, "  FLAGS\n");
    fprintf(stdout, "   -h, --help                 Print help page\n");
-   fprintf(stdout, "   -1 par, --1var par         (REQUIRED) Takes first variable parameter to \"par\"\n");
-   fprintf(stdout, "   -2 par, --2var par         (REQUIRED) Takes second variable parameter to \"par\"\n");
-   fprintf(stdout, "   -i file, --input file      (REQUIRED) Takes input file name to \"file\"\n");
-   fprintf(stdout, "   -t step, --timestep step   (REQUIRED) Sets the timestep to \"step\" (Value -1 will result in dumping values of all timesteps.)\n");
-   fprintf(stdout, "   -o file, --output file     (OPTIONAL) Takes output file name to \"file\" (without this flag, the program will print to stdout)\n");
-   fprintf(stdout, "   -n num, --number num       (OPTIONAL) Sets number of output points to \"num\"\n");
-   fprintf(stdout, "   -s idx, --start idx        (OPTIONAL) Sets the starting particle index to \"idx\"\n");
+   fprintf(stdout, "   -i file, --input file      (REQUIRED) Takes input base file name to \"file\" (extension h5 is assumed \n");
+   fprintf(stdout, "   -o file, --output file     (REQUIRED) Takes output base file name to \"file\" (extension vtk is added)\n");
    fprintf(stdout, "\n");
    fprintf(stdout, "  Examples:\n");
    fprintf(stdout, "\n");
    fprintf(stdout, "  1) Create GNU plot file output.txt from sample.h5part by ploting x vs px for timestep 54\n");
    fprintf(stdout, "\n");
-   fprintf(stdout, "        h5pToGNUplot -t 54 -1 x -2 px -i sample.h5part -o output.txt\n");
-   fprintf(stdout, "\n");
-   fprintf(stdout, "  2) Create GNU plot file output.txt from sample.h5part by ploting x vs px for timestep 54 \n     using 1200 points from particle index 76\n");
-   fprintf(stdout, "\n");
-   fprintf(stdout, "        h5pToGNUplot -t 54 -1 x -2 px -i sample.h5part -o output.txt -s 76 -n 1200\n");
+   fprintf(stdout, "        /h5ToVtk -i ctf3-injector-darkcurrent-1 -o ctf3-injector-darkcurrent-1- \n");
    fprintf(stdout, "\n");
 }
+
 
 int main(int argc, const char *argv[])
 {
