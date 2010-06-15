@@ -396,7 +396,7 @@ fi
 AC_MSG_CHECKING([wheter tools are enabled])
 if test "X$USE_TOOLS" = "Xyes"; then
 	AC_MSG_RESULT([yes])
-	BUILD_TOOLS="h5pAttrib h5pToGNUplot # homdynToH5p"
+	BUILD_TOOLS="h5pAttrib h5pToGNUplot h5ToVtk# homdynToH5p"
 else
 	AC_MSG_RESULT([no])
 fi
