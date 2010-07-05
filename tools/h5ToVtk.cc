@@ -17,7 +17,6 @@
 #include <sstream>
 #include <iomanip>
 #include <cassert>
-
 using namespace std;
 
 #define MAX_LEN 100
@@ -30,7 +29,8 @@ static void variable_assign(int argc, const char *argv[]);
 /* Global variables */
 static char* input_name      = NULL;
 static char* output_name      = NULL;
-static bool flg_alive = false; 
+static bool flg_alive = false;
+static double z_pos = 0.0; 
 static int print_all = 0;
 
 /* `get_option' variables */
@@ -62,7 +62,7 @@ static struct long_options l_opts[] =
 	{ "help", no_arg, 'h' },         // Print help page
 	{ "input", require_arg, 'i' },        // Takes input file name
 	{ "output", require_arg, 'o' },   // Takes output file name (without this flag, the program will print to stdout)
-	{ "alive ", no_arg, 'a' }, // also generate the alive dark current to display the dark current source
+	{ "alive ", no_arg , 'a' }, // also generate the alive dark current to display the dark current source
 	{ NULL, 0, '\0' }
     };
 
@@ -246,7 +246,9 @@ static void variable_assign(int argc, const char *argv[])
 		    input_name = strdup(opt_arg);
 		    break;
 		case 'a': // 
-		    flg_alive = true;
+                    { flg_alive = true;
+                        z_pos = atof(strdup(opt_arg));
+                    }
 		    break;  
 		default:
 		    print_help();
@@ -259,20 +261,20 @@ static void variable_assign(int argc, const char *argv[])
 static void print_help()
 {
     fflush(stdout);
-    fprintf(stdout, "\nusage: h5ToVtk  -i INPUTFILE -o OUTPUTFILE [OPTIONAL_FLAGS] -a\n");
+    fprintf(stdout, "\nusage: h5ToVtk  -i INPUTFILE -o OUTPUTFILE [OPTIONAL_FLAGS] -a ZVALUE\n");
     fprintf(stdout, "\n");
     fprintf(stdout, "  FLAGS\n");
     fprintf(stdout, "   -h, --help                 Print help page\n");
     fprintf(stdout, "   -i file, --input file      (REQUIRED) Takes input base file name to \"file\" (extension h5 is assumed \n");
     fprintf(stdout, "   -o file, --output file     (REQUIRED) Takes output base file name to \"file\" (extension vtk is added)\n");
-    fprintf(stdout, "   -a,                        Only display particles which have survived \n");
+    fprintf(stdout, "   -a zvalue                  Only display particles which have servived and reached z value  \n");
 
     fprintf(stdout, "\n");
     fprintf(stdout, "  Examples:\n");
     fprintf(stdout, "\n");
-    fprintf(stdout, "  1) Create GNU plot file output.txt from sample.h5part by ploting x vs px for timestep 54\n");
-    fprintf(stdout, "\n");
     fprintf(stdout, "        /h5ToVtk -i ctf3-injector-darkcurrent-1 -o ctf3-injector-darkcurrent-1- \n");
+    fprintf(stdout, "\n");
+    fprintf(stdout, "        /h5ToVtk -i ctf3-injector-darkcurrent-1 -o ctf3-injector-darkcurrent-1- -a 0.19 \n");
     fprintf(stdout, "\n");
 }
 
@@ -330,7 +332,7 @@ int main(int argc, const char *argv[])
 	H5PartReadDataFloat64(h5file, "z", z);
 
 	for(unsigned long int n = 0; n < nparticles; ++n) {
-	    if (z[n] >= 0.19)
+	    if (z[n] >= z_pos)
 		idSet.insert(larray[n]);
 	}
        
