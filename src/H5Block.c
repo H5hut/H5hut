@@ -269,17 +269,16 @@ static h5part_int64_t
 _allgather (
 	const H5PartFile *f		/*!< IN: file handle */
 	) {
-	struct H5BlockPartition *partition = &f->block->user_layout[f->myproc];
 	struct H5BlockPartition *layout = f->block->user_layout;
 
 	MPI_Datatype    partition_m;
 	size_t n = sizeof (struct H5BlockPartition) / sizeof (h5part_int64_t);
 
 	MPI_Type_contiguous ( n, MPI_LONG_LONG, &partition_m );
-	  MPI_Type_commit ( &partition_m );
+	MPI_Type_commit ( &partition_m );
 
-	MPI_Allgather ( partition, 1, partition_m, layout, 1, partition_m,
-			f->comm );
+	MPI_Allgather ( MPI_IN_PLACE, 0, MPI_DATATYPE_NULL,
+			layout, 1, partition_m, f->comm );
 
 	return H5PART_SUCCESS;
 }
