@@ -115,9 +115,10 @@ END FUNCTION
 !! - \c vfd_mpiposix - use the HDF5 MPI-POSIX virtual file driver
 !! - \c vfd_mpio_ind - use MPI-IO in indepedent mode
 !!
+!! See \ref H5PartOpenFileParallelAlign
 !! \return 0 on success or error code
 !<
-INTEGER*8 FUNCTION h5pt_openr_par_align ( filename, mpi_communicator, align )
+INTEGER*8 FUNCTION h5pt_openr_par_align ( filename, mpi_communicator, align, flags )
     CHARACTER(LEN=*), INTENT(IN) :: filename    !< the filename to open for reading
     INTEGER, INTENT(IN) :: mpi_communicator     !< the MPI_Communicator used by the program
     INTEGER*8, INTENT(IN) :: align              !< alignment value in bytes
