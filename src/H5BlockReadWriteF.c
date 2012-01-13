@@ -57,7 +57,7 @@ h5bl_3d_read_scalar_field_r8 (
 
 	char *field_name2 =  _H5Part_strdupfor2c ( field_name,  l_field_name );
 
-	h5part_int64_t herr = H5Block3dWriteScalarFieldFloat64 (
+	h5part_int64_t herr = H5Block3dReadScalarFieldFloat64 (
 		filehandle, field_name2, data );
 
 	free ( field_name2 );
@@ -161,7 +161,7 @@ h5bl_3d_read_scalar_field_r4 (
 
 	char *field_name2 =  _H5Part_strdupfor2c ( field_name,  l_field_name );
 
-	h5part_int64_t herr = H5Block3dWriteScalarFieldFloat32 (
+	h5part_int64_t herr = H5Block3dReadScalarFieldFloat32 (
 		filehandle, field_name2, data );
 
 	free ( field_name2 );
@@ -265,7 +265,7 @@ h5bl_3d_read_scalar_field_i8 (
 
 	char *field_name2 =  _H5Part_strdupfor2c ( field_name,  l_field_name );
 
-	h5part_int64_t herr = H5Block3dWriteScalarFieldInt64 (
+	h5part_int64_t herr = H5Block3dReadScalarFieldInt64 (
 		filehandle, field_name2, data );
 
 	free ( field_name2 );
@@ -369,7 +369,7 @@ h5bl_3d_read_scalar_field_i4 (
 
 	char *field_name2 =  _H5Part_strdupfor2c ( field_name,  l_field_name );
 
-	h5part_int64_t herr = H5Block3dWriteScalarFieldInt32 (
+	h5part_int64_t herr = H5Block3dReadScalarFieldInt32 (
 		filehandle, field_name2, data );
 
 	free ( field_name2 );

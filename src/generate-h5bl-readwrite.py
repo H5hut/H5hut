@@ -214,7 +214,7 @@ h5bl_#DIM#d_read_scalar_field_#TYPE_F90_ABV# (
 
 	char *field_name2 =  _H5Part_strdupfor2c ( field_name,  l_field_name );
 
-	h5part_int64_t herr = H5Block#DIM#dWriteScalarField#TYPE_ABV# (
+	h5part_int64_t herr = H5Block#DIM#dReadScalarField#TYPE_ABV# (
 		filehandle, field_name2, data );
 
 	free ( field_name2 );
