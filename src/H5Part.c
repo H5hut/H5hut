@@ -291,15 +291,15 @@ _H5Part_open_file (
 
 	if ( align != 0 ) {
 		_H5Part_print_info (
-			"Setting HDF5 alignment to %ld bytes with threshold at half that many bytes",
-			align );
+			"Setting HDF5 alignment to %lld bytes with threshold at half that many bytes",
+			(long long)align );
 		if (H5Pset_alignment ( f->access_prop, align/2, align ) < 0) {
 			HANDLE_H5P_SET_FAPL_ERR;
 			goto error_cleanup;
 		}
 		_H5Part_print_info (
-			"Setting HDF5 meta block to %ld bytes",
-			align );
+			"Setting HDF5 meta block to %lld bytes",
+			(long long)align );
 		if (H5Pset_meta_block_size ( f->access_prop, align ) < 0) {
 			HANDLE_H5P_SET_FAPL_ERR;
 			goto error_cleanup;
@@ -1314,6 +1314,9 @@ _H5Part_normalize_h5_type (
 		if ( size==8 ) {
 			return H5PART_INT64;
 		}
+	  	else if ( size==4 ) {
+			return H5PART_INT32;
+		}
 	  	else if ( size==1 ) {
 			return H5PART_CHAR;
 		}
@@ -1343,7 +1346,6 @@ _H5Part_read_attrib (
 	) {
 
 	herr_t herr;
-	h5part_int64_t h5err;
 	hid_t attrib_id;
 	hid_t space_id;
 	hid_t type_id;
@@ -2085,9 +2087,6 @@ _H5Part_iteration_operator2 (
 	const H5L_info_t *linfo,	/*!< link info */
 	void *operator_data		/*!< [in,out] data passed to the iterator */
 	) {
-
-  struct _iter_op_data *data = (struct _iter_op_data*)operator_data;
-  herr_t herr = 0;
 
   switch (linfo->type) {
     case H5L_TYPE_HARD: {
@@ -3214,7 +3213,6 @@ _read_data (
 				"elements selected (%lld) than are available "
 				"in memory (%lld).",
 				name2, (long long)nread, (long long)nmem );
-			memspace_id == H5S_ALL;
 		}
 	}
 
