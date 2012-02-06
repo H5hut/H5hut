@@ -1,3 +1,12 @@
+#### H5PART 1.6.6 ############################################################
+
+Fixed typo (Write instead of Read) in the h5bl_3d_read_scalar_field* Fortran
+interface.
+
+Added missing type normalization for int32 type.
+
+Rewrite of h5pAttrib tool.
+
 #### H5PART 1.6.5 ############################################################
 
 Fixed several build errors reported by Iuri Prilepov on Ubuntu 11.04.
