@@ -661,7 +661,7 @@ test_open_objects(H5PartFile *file, int max_objects)
 				"at line %4d in %s\n", nopen, max_objects,
 				(int)__LINE__, __FILE__ );
 
-		hid_t *list = malloc(sizeof(hid_t)*nopen);
+		hid_t *list = (hid_t)malloc(sizeof(hid_t)*nopen);
 		H5Fget_obj_ids(file->file, H5F_OBJ_ALL, nopen, list);
 
                 H5O_info_t info;
