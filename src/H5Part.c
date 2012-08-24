@@ -1347,7 +1347,6 @@ _H5Part_read_attrib (
 
 	herr_t herr;
 	hid_t attrib_id;
-	hid_t space_id;
 	hid_t type_id;
 
 #ifdef H5PART_HAVE_HDF5_18
@@ -1363,14 +1362,8 @@ _H5Part_read_attrib (
 	type_id = H5Aget_type ( attrib_id );
 	if ( type_id < 0 ) return HANDLE_H5A_GET_TYPE_ERR;
 
-	space_id = H5Aget_space ( attrib_id );
-	if ( space_id < 0 ) return HANDLE_H5A_GET_SPACE_ERR;
-
 	herr = H5Aread ( attrib_id, type_id, attrib_value );
 	if ( herr < 0 ) return HANDLE_H5A_READ_ERR;
-
-	herr = H5Sclose ( space_id );
-	if ( herr < 0 ) return HANDLE_H5S_CLOSE_ERR;
 
 	herr = H5Tclose ( type_id );
 	if ( herr < 0 ) return HANDLE_H5T_CLOSE_ERR;

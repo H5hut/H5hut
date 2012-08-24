@@ -2010,6 +2010,250 @@ H5Block3dSetFieldSpacing (
 }
 
 /*!
+  \ingroup h5block_attrib
+
+  Get the explicit list of X coordinates for field \c field_name in the current
+  time step. The coordinates are read into the 1D array \c coords which has
+  length \c coords_len.
+
+  By convention, the \c coords array should have the same length as the X
+  dimension of the field, and a warning will be printed if they differ.
+
+
+  \return \c H5PART_SUCCESS or error code
+*/
+h5part_int64_t
+H5Block3dGetFieldXCoords(
+	H5PartFile *f,				/*!< IN: file handle */
+	const char *field_name,			/*!< IN: field name */
+	h5part_float64_t *coords,		/*!< OUT: X coordinates */
+	const h5part_int64_t coords_len		/*!< IN: length of coordinates */
+	) {
+
+	SET_FNAME ( "H5BlockGetFieldXCoords" );
+	BLOCK_INIT ( f );
+	CHECK_TIMEGROUP( f );
+	CHECK_LAYOUT( f );
+
+	struct H5BlockStruct *b = f->block;
+
+	if (coords_len != b->i_max + 1)
+	    _H5Part_print_warn( "Coordinate array length (%lld) does not match X dimension (%lld)",
+		    (long long)coords_len, (long long)b->i_max + 1);
+
+	return _read_field_attrib (
+		f,
+		field_name,
+		H5BLOCK_FIELD_XCOORD_NAME,
+		coords );
+}
+
+/*!
+  \ingroup h5block_attrib
+
+  Set an explicit list of X coordinates for field \c field_name in the current
+  time step. The coordinates are a 1D array of floating point values with
+  dimension \c coords_len.
+
+  By convention, the \c coords array should have the same length as the X
+  dimension of the field, and a warning will be printed if not.
+
+  \return \c H5PART_SUCCESS or error code
+*/
+h5part_int64_t
+H5Block3dSetFieldXCoords (
+	H5PartFile *f,				/*!< IN: file handle */
+	const char *field_name,			/*!< IN: field name */
+	const h5part_float64_t *coords,		/*!< IN: X coordinates */
+	const h5part_int64_t coords_len		/*!< IN: number of coordinates */
+	) {
+
+	SET_FNAME ( "H5BlockSetFieldXCoords" );
+	BLOCK_INIT ( f );
+	CHECK_WRITABLE_MODE( f );
+	CHECK_TIMEGROUP( f );
+	CHECK_LAYOUT( f );
+
+	struct H5BlockStruct *b = f->block;
+
+	if (coords_len != b->i_max + 1)
+	    _H5Part_print_warn( "Coordinate array length (%lld) does not match X dimension (%lld)",
+		    (long long)coords_len, (long long)b->i_max + 1);
+
+	return _write_field_attrib (
+		f,
+		field_name,
+		H5BLOCK_FIELD_XCOORD_NAME,
+		(const hid_t)H5PART_FLOAT64, 
+		coords,
+		coords_len
+		 );
+}
+
+/*!
+  \ingroup h5block_attrib
+
+  Get the explicit list of Y coordinates for field \c field_name in the current
+  time step. The coordinates are read into the 1D array \c coords which has
+  length \c coords_len.
+
+  By convention, the \c coords array should have the same length as the Y
+  dimension of the field, and a warning will be printed if they differ.
+
+
+  \return \c H5PART_SUCCESS or error code
+*/
+h5part_int64_t
+H5Block3dGetFieldYCoords(
+	H5PartFile *f,				/*!< IN: file handle */
+	const char *field_name,			/*!< IN: field name */
+	h5part_float64_t *coords,		/*!< OUT: Y coordinates */
+	const h5part_int64_t coords_len		/*!< IN: length of coordinates */
+	) {
+
+	SET_FNAME ( "H5BlockGetFieldYCoords" );
+	BLOCK_INIT ( f );
+	CHECK_TIMEGROUP( f );
+	CHECK_LAYOUT( f );
+
+	struct H5BlockStruct *b = f->block;
+
+	if (coords_len != b->j_max + 1)
+	    _H5Part_print_warn( "Coordinate array length (%lld) does not match Y dimension (%lld)",
+		    (long long)coords_len, (long long)b->j_max + 1);
+
+	return _read_field_attrib (
+		f,
+		field_name,
+		H5BLOCK_FIELD_YCOORD_NAME,
+		coords );
+}
+
+
+/*!
+  \ingroup h5block_attrib
+
+  Set an explicit list of Y coordinates for field \c field_name in the current
+  time step. The coordinates are a 1D array of floating point values with
+  dimension \c coords_len.
+
+  By convention, the \c coords array should have the same length as the Y
+  dimension of the field, and a warning will be printed if not.
+
+  \return \c H5PART_SUCCESS or error code
+*/
+h5part_int64_t
+H5Block3dSetFieldYCoords (
+	H5PartFile *f,				/*!< IN: file handle */
+	const char *field_name,			/*!< IN: field name */
+	const h5part_float64_t *coords,		/*!< IN: Y coordinates */
+	const h5part_int64_t coords_len		/*!< IN: number of coordinates */
+	) {
+
+	SET_FNAME ( "H5BlockSetFieldYCoords" );
+	BLOCK_INIT ( f );
+	CHECK_WRITABLE_MODE( f );
+	CHECK_TIMEGROUP( f );
+	CHECK_LAYOUT( f );
+
+	struct H5BlockStruct *b = f->block;
+
+	if (coords_len != b->j_max + 1)
+	    _H5Part_print_warn( "Coordinate array length (%lld) does not match X dimension (%lld)",
+		    (long long)coords_len, (long long)b->j_max + 1);
+
+	return _write_field_attrib (
+		f,
+		field_name,
+		H5BLOCK_FIELD_YCOORD_NAME,
+		(const hid_t)H5PART_FLOAT64, 
+		coords,
+		coords_len
+		 );
+}
+
+/*!
+  \ingroup h5block_attrib
+
+  Get the explicit list of Z coordinates for field \c field_name in the current
+  time step. The coordinates are read into the 1D array \c coords which has
+  length \c coords_len.
+
+  By convention, the \c coords array should have the same length as the Z
+  dimension of the field, and a warning will be printed if they differ.
+
+
+  \return \c H5PART_SUCCESS or error code
+*/
+h5part_int64_t
+H5Block3dGetFieldZCoords(
+	H5PartFile *f,				/*!< IN: file handle */
+	const char *field_name,			/*!< IN: field name */
+	h5part_float64_t *coords,		/*!< OUT: Z coordinates */
+	const h5part_int64_t coords_len		/*!< IN: length of coordinates */
+	) {
+
+	SET_FNAME ( "H5BlockGetFieldZCoords" );
+	BLOCK_INIT ( f );
+	CHECK_TIMEGROUP( f );
+	CHECK_LAYOUT( f );
+
+	struct H5BlockStruct *b = f->block;
+
+	if (coords_len != b->k_max + 1)
+	    _H5Part_print_warn( "Coordinate array length (%lld) does not match Z dimension (%lld)",
+		    (long long)coords_len, (long long)b->k_max + 1);
+
+	return _read_field_attrib (
+		f,
+		field_name,
+		H5BLOCK_FIELD_ZCOORD_NAME,
+		coords );
+}
+
+/*!
+  \ingroup h5block_attrib
+
+  Set an explicit list of Z coordinates for field \c field_name in the current
+  time step. The coordinates are a 1D array of floating point values with
+  dimension \c coords_len.
+
+  By convention, the \c coords array should have the same length as the Z
+  dimension of the field, and a warning will be printed if not.
+
+  \return \c H5PART_SUCCESS or error code
+*/
+h5part_int64_t
+H5Block3dSetFieldZCoords (
+	H5PartFile *f,				/*!< IN: file handle */
+	const char *field_name,			/*!< IN: field name */
+	const h5part_float64_t *coords,		/*!< IN: Z coordinates */
+	const h5part_int64_t coords_len		/*!< IN: number of coordinates */
+	) {
+
+	SET_FNAME ( "H5BlockSetFieldZCoords" );
+	BLOCK_INIT ( f );
+	CHECK_WRITABLE_MODE( f );
+	CHECK_TIMEGROUP( f );
+	CHECK_LAYOUT( f );
+
+	struct H5BlockStruct *b = f->block;
+
+	if (coords_len != b->k_max + 1)
+	    _H5Part_print_warn( "Coordinate array length (%lld) does not match X dimension (%lld)",
+		    (long long)coords_len, (long long)b->k_max  + 1);
+
+	return _write_field_attrib (
+		f,
+		field_name,
+		H5BLOCK_FIELD_ZCOORD_NAME,
+		(const hid_t)H5PART_FLOAT64, 
+		coords,
+		coords_len
+		 );
+}
+
+/*!
   \ingroup h5block_model
 
   Checks whether the current time-step has field data or not.

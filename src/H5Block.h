@@ -13,6 +13,9 @@ extern "C" {
 
 #define H5BLOCK_FIELD_ORIGIN_NAME	"__Origin__"
 #define H5BLOCK_FIELD_SPACING_NAME	"__Spacing__"
+#define H5BLOCK_FIELD_XCOORD_NAME	"__X_Coordinates__"
+#define H5BLOCK_FIELD_YCOORD_NAME	"__Y_Coordinates__"
+#define H5BLOCK_FIELD_ZCOORD_NAME	"__Z_Coordinates__"
 
 /*! 
   Interface for block structured field data.
@@ -136,6 +139,54 @@ H5Block3dSetFieldSpacing (
 	const h5part_float64_t x_spacing,
 	const h5part_float64_t y_spacing,
 	const h5part_float64_t z_spacing
+	);
+
+h5part_int64_t
+H5Block3dGetFieldXCoords (
+	H5PartFile *f,
+	const char *field_name,
+	h5part_float64_t *coords,
+	const h5part_int64_t coords_len
+	);
+
+h5part_int64_t
+H5Block3dSetFieldXCoords (
+	H5PartFile *f,
+	const char *field_name,
+	const h5part_float64_t *coords,
+	const h5part_int64_t coords_len
+	);
+
+h5part_int64_t
+H5Block3dGetFieldYCoords (
+	H5PartFile *f,
+	const char *field_name,
+	h5part_float64_t *coords,
+	const h5part_int64_t coords_len
+	);
+
+h5part_int64_t
+H5Block3dSetFieldYCoords (
+	H5PartFile *f,
+	const char *field_name,
+	const h5part_float64_t *coords,
+	const h5part_int64_t coords_len
+	);
+
+h5part_int64_t
+H5Block3dGetFieldZCoords (
+	H5PartFile *f,
+	const char *field_name,
+	h5part_float64_t *coords,
+	const h5part_int64_t coords_len
+	);
+
+h5part_int64_t
+H5Block3dSetZCoords (
+	H5PartFile *f,
+	const char *field_name,
+	const h5part_float64_t *coords,
+	const h5part_int64_t coords_len
 	);
 
 h5part_int64_t

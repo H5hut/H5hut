@@ -68,6 +68,24 @@
 #define h5bl_3d_get_field_origin F77NAME (				\
 					h5bl_3d_get_field_origin_,	\
 					H5BL_3D_GET_FIELD_origin )
+#define h5bl_3d_get_field_xcoords F77NAME (				\
+					h5bl_3d_get_field_xcoords_,	\
+					H5BL_3D_GET_FIELD_XCOORDS )
+#define h5bl_3d_set_field_xcoords F77NAME (				\
+					h5bl_3d_set_field_xcoords_,	\
+					H5BL_3D_SET_FIELD_XCOORDS )
+#define h5bl_3d_get_field_ycoords F77NAME (				\
+					h5bl_3d_get_field_ycoords_,	\
+					H5BL_3D_GET_FIELD_YCOORDS )
+#define h5bl_3d_set_field_ycoords F77NAME (				\
+					h5bl_3d_set_field_ycoords_,	\
+					H5BL_3D_SET_FIELD_YCOORDS )
+#define h5bl_3d_get_field_zcoords F77NAME (				\
+					h5bl_3d_get_field_zcoords_,	\
+					H5BL_3D_GET_FIELD_ZCOORDS )
+#define h5bl_3d_set_field_zcoords F77NAME (				\
+					h5bl_3d_set_field_zcoords_,	\
+					H5BL_3D_SET_FIELD_ZCOORDS )
 #endif
 
 h5part_int64_t
@@ -443,6 +461,126 @@ h5bl_3d_set_field_origin (
 
 	h5part_int64_t herr = H5Block3dSetFieldOrigin (
 		filehandle, field_name2, *x, *y, *z );
+
+	free ( field_name2 );
+	return herr;
+}
+
+h5part_int64_t
+h5bl_3d_set_field_xcoords (
+	h5part_int64_t *f,
+	const char *field_name,
+	const h5part_float64_t *coords,
+	const h5part_int64_t *coords_len,
+	const int l_field_name
+	) {
+
+	H5PartFile *filehandle = (H5PartFile*)(size_t)*f;
+
+	char *field_name2 =  _H5Part_strdupfor2c ( field_name, l_field_name );
+
+	h5part_int64_t herr = H5Block3dSetFieldXCoords (
+		filehandle, field_name2, coords, *coords_len );
+
+	free ( field_name2 );
+	return herr;
+}
+
+h5part_int64_t
+h5bl_3d_get_field_xcoords (
+	h5part_int64_t *f,
+	const char *field_name,
+	h5part_float64_t *coords,
+	const h5part_int64_t *coords_len,
+	const int l_field_name
+	) {
+
+	H5PartFile *filehandle = (H5PartFile*)(size_t)*f;
+
+	char *field_name2 =  _H5Part_strdupfor2c ( field_name, l_field_name );
+
+	h5part_int64_t herr = H5Block3dGetFieldXCoords (
+		filehandle, field_name2, coords, *coords_len );
+
+	free ( field_name2 );
+	return herr;
+}
+
+h5part_int64_t
+h5bl_3d_set_field_ycoords (
+	h5part_int64_t *f,
+	const char *field_name,
+	const h5part_float64_t *coords,
+	const h5part_int64_t *coords_len,
+	const int l_field_name
+	) {
+
+	H5PartFile *filehandle = (H5PartFile*)(size_t)*f;
+
+	char *field_name2 =  _H5Part_strdupfor2c ( field_name, l_field_name );
+
+	h5part_int64_t herr = H5Block3dSetFieldYCoords (
+		filehandle, field_name2, coords, *coords_len );
+
+	free ( field_name2 );
+	return herr;
+}
+
+h5part_int64_t
+h5bl_3d_get_field_ycoords (
+	h5part_int64_t *f,
+	const char *field_name,
+	h5part_float64_t *coords,
+	const h5part_int64_t *coords_len,
+	const int l_field_name
+	) {
+
+	H5PartFile *filehandle = (H5PartFile*)(size_t)*f;
+
+	char *field_name2 =  _H5Part_strdupfor2c ( field_name, l_field_name );
+
+	h5part_int64_t herr = H5Block3dGetFieldYCoords (
+		filehandle, field_name2, coords, *coords_len );
+
+	free ( field_name2 );
+	return herr;
+}
+
+h5part_int64_t
+h5bl_3d_set_field_zcoords (
+	h5part_int64_t *f,
+	const char *field_name,
+	const h5part_float64_t *coords,
+	const h5part_int64_t *coords_len,
+	const int l_field_name
+	) {
+
+	H5PartFile *filehandle = (H5PartFile*)(size_t)*f;
+
+	char *field_name2 =  _H5Part_strdupfor2c ( field_name, l_field_name );
+
+	h5part_int64_t herr = H5Block3dSetFieldZCoords (
+		filehandle, field_name2, coords, *coords_len );
+
+	free ( field_name2 );
+	return herr;
+}
+
+h5part_int64_t
+h5bl_3d_get_field_zcoords (
+	h5part_int64_t *f,
+	const char *field_name,
+	h5part_float64_t *coords,
+	const h5part_int64_t *coords_len,
+	const int l_field_name
+	) {
+
+	H5PartFile *filehandle = (H5PartFile*)(size_t)*f;
+
+	char *field_name2 =  _H5Part_strdupfor2c ( field_name, l_field_name );
+
+	h5part_int64_t herr = H5Block3dGetFieldZCoords (
+		filehandle, field_name2, coords, *coords_len );
 
 	free ( field_name2 );
 	return herr;

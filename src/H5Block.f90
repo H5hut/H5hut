@@ -232,4 +232,69 @@ INTEGER*8 FUNCTION h5bl_3d_set_field_origin ( filehandle, name, x, y, z )
     REAL*8, INTENT(IN) :: z
 END FUNCTION
   
+!> \ingroup h5blockf_attrib
+!! See \ref H5Block3dGetFieldXCoords
+!! \return 0 on success or error code
+!<
+INTEGER*8 FUNCTION h5bl_3d_get_field_xcoords ( filehandle, name, coords )
+    INTEGER*8, INTENT(IN) :: filehandle
+    CHARACTER(LEN=*), INTENT(IN) :: name
+    REAL*8, INTENT(OUT) :: coords(*)
+    INTEGER*8, INTENT(IN) :: coords_len
+END FUNCTION
   
+!> \ingroup h5blockf_attrib
+!! See \ref H5Block3dSetFieldXCoords
+!! \return 0 on success or error code
+!<
+INTEGER*8 FUNCTION h5bl_3d_set_field_xcoords ( filehandle, name, coords )
+    INTEGER*8, INTENT(IN) :: filehandle
+    CHARACTER(LEN=*), INTENT(IN) :: name
+    REAL*8, INTENT(IN) :: coords(*)
+    INTEGER*8, INTENT(IN) :: coords_len
+END FUNCTION
+
+!> \ingroup h5blockf_attrib
+!! See \ref H5Block3dGetFieldYCoords
+!! \return 0 on success or error code
+!<
+INTEGER*8 FUNCTION h5bl_3d_get_field_ycoords ( filehandle, name, coords )
+    INTEGER*8, INTENT(IN) :: filehandle
+    CHARACTER(LEN=*), INTENT(IN) :: name
+    REAL*8, INTENT(OUT) :: coords(*)
+    INTEGER*8, INTENT(IN) :: coords_len
+END FUNCTION
+  
+!> \ingroup h5blockf_attrib
+!! See \ref H5Block3dSetFieldYCoords
+!! \return 0 on success or error code
+!<
+INTEGER*8 FUNCTION h5bl_3d_set_field_ycoords ( filehandle, name, coords )
+    INTEGER*8, INTENT(IN) :: filehandle
+    CHARACTER(LEN=*), INTENT(IN) :: name
+    REAL*8, INTENT(IN) :: coords(*)
+    INTEGER*8, INTENT(IN) :: coords_len
+END FUNCTION
+
+!> \ingroup h5blockf_attrib
+!! See \ref H5Block3dGetFieldZCoords
+!! \return 0 on success or error code
+!<
+INTEGER*8 FUNCTION h5bl_3d_get_field_zcoords ( filehandle, name, coords )
+    INTEGER*8, INTENT(IN) :: filehandle
+    CHARACTER(LEN=*), INTENT(IN) :: name
+    REAL*8, INTENT(OUT) :: coords(*)
+    INTEGER*8, INTENT(IN) :: coords_len
+END FUNCTION
+  
+!> \ingroup h5blockf_attrib
+!! See \ref H5Block3dSetFieldZCoords
+!! \return 0 on success or error code
+!<
+INTEGER*8 FUNCTION h5bl_3d_set_field_zcoords ( filehandle, name, coords )
+    INTEGER*8, INTENT(IN) :: filehandle
+    CHARACTER(LEN=*), INTENT(IN) :: name
+    REAL*8, INTENT(IN) :: coords(*)
+    INTEGER*8, INTENT(IN) :: coords_len
+END FUNCTION
+
