@@ -53,6 +53,7 @@ usage (
         std::cout << "                    default is yes" << std::endl;
         std::cout << "  --(no-)volume     do (not) convert volume mesh." << std::endl;
         std::cout << "                    default is no" << std::endl;
+        std::cout << "  --shift x,y,z     shift all points by x,y,z" << std::endl;
         std::cout << std::endl;
         exit (1);
 }
