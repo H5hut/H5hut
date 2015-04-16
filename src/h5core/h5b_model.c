@@ -547,8 +547,8 @@ h5b_3d_set_view (
 	p->k_end =   k_end;
 	_normalize_partition(p);
 
-#ifdef PARALLEL_IO
 	h5b_fdata_t *b = f->b;
+#ifdef PARALLEL_IO
 	h5b_partition_t *user_layout;
 	h5b_partition_t *write_layout;
 
@@ -565,7 +565,6 @@ h5b_3d_set_view (
 	TRY( _dissolve_ghostzones(f, user_layout, write_layout) );
 	b->user_layout[0] = user_layout[f->myproc];
 	b->write_layout[0] = write_layout[f->myproc];
-	b->have_layout = 1;
 
 	p = b->user_layout;
 	h5_debug (
@@ -587,9 +586,9 @@ h5b_3d_set_view (
 
 	h5_free(user_layout);
 	h5_free(write_layout);
-
-	TRY( h5bpriv_release_hyperslab(f) );
 #endif
+	TRY( h5bpriv_release_hyperslab(f) );
+	b->have_layout = 1;
 
 	H5_CORE_API_RETURN (H5_SUCCESS);
 }
