@@ -28,7 +28,8 @@ extern "C" {
 
   You can also select a "virtual file driver" in the HDF5 layer using:
   - H5_VFD_INDEPENDENT: MPI-IO in independent (asynchronous) mode
-  - H5_VFD_MPIPOSIX: parallel I/O implemented directly by HDF5, bypassing MPI-IO
+  - H5_VFD_MPIPOSIX: parallel I/O implemented directly by HDF5, bypassing
+    MPI-IO (only for hdf5 <= 1.8.12)
 
   \return File handle.
   \return NULL on error.

@@ -292,7 +292,11 @@ h5_set_throttle (
 	const int factor
 	) {
 	H5_CORE_API_ENTER (h5_err_t, "f=%p, factor=%d", f, factor);
+#if H5_VERSION_LE(1,8,12)
 	if ( (f->mode & H5_VFD_INDEPENDENT) || (f->mode & H5_VFD_MPIPOSIX) ) {
+#else
+	if (f->mode & H5_VFD_INDEPENDENT) {
+#endif
 		f->throttle = factor;
 		h5_info ("Throttling enabled with factor = %d", f->throttle );
 	} else {

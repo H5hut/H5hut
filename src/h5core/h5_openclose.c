@@ -139,11 +139,14 @@ h5_err_t mpi_init (
 	TRY (f->access_prop = hdf5_create_property(H5P_FILE_ACCESS));
 
 	/* select the HDF5 VFD */
+#if H5_VERSION_LE(1,8,12)
 	if (f->mode & H5_VFD_MPIPOSIX) {
 		h5_info("Selecting MPI-POSIX VFD");
 		hbool_t use_gpfs = 0; // TODO autodetect GPFS?
 		TRY (hdf5_set_fapl_mpiposix_property(f->access_prop, comm, use_gpfs));
-	} else {
+	} else
+#endif
+	{
 		h5_info("Selecting MPI-IO VFD");
 		TRY (hdf5_set_fapl_mpio_property(f->access_prop, comm, MPI_INFO_NULL));
 		if (f->mode & H5_VFD_INDEPENDENT) {
