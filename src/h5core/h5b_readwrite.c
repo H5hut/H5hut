@@ -9,7 +9,8 @@ _select_hyperslab_for_writing (
 	/*
 	  re-use existing hyperslab
 	*/
-	if ( f->b->shape >= 0 ) return H5_SUCCESS;
+	if ( f->b->shape >= 0 )
+		H5_PRIV_FUNC_LEAVE (H5_SUCCESS);
 
 	h5b_fdata_t *b = f->b;
 	h5b_partition_t *p = b->write_layout;
