@@ -10,6 +10,7 @@ AC_INIT([H5hut], [2.0.0rc6], [h5part@lists.psi.ch], H5hut)
 AC_PREREQ(2.60)
 AC_CONFIG_HEADERS(config.h)
 AC_CONFIG_MACRO_DIR([m4])
+LT_INIT
 AM_INIT_AUTOMAKE
 
 ENABLE_DEBUG='no'
