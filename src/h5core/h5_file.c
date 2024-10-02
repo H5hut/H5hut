@@ -92,7 +92,7 @@ mpi_init (
 		TRY (hdf5_set_fapl_mpiposix_property (f->props->access_prop,
                                                      f->props->comm, use_gpfs));
 
-        } else if ((f->props->flags & H5_VFD_CORE)) {
+        } else if ((f->props->flags & H5_VFD_CORE_IO)) {
 		h5_info("Selecting CORE VFD");
                 TRY (hdf5_set_fapl_core (f->props->access_prop,
                                          f->props->align, 1));
@@ -112,7 +112,7 @@ mpi_init (
 	}
 #else
 	// VFD_MPIO_POSIX has been removed in HDF5 1.8.13
-        if ((f->props->flags & H5_VFD_CORE)) {
+        if ((f->props->flags & H5_VFD_CORE_IO)) {
 		h5_info("Selecting CORE VFD");
                 TRY (hdf5_set_fapl_core (f->props->access_prop,
                                          f->props->align, 1));
@@ -197,7 +197,7 @@ h5_set_prop_file_mpio_collective (
 			(long long int)props->class);
         }
 #ifdef H5_HAVE_PARALLEL
-        props->flags &= ~(H5_VFD_MPIO_POSIX | H5_VFD_MPIO_INDEPENDENT | H5_VFD_CORE);
+        props->flags &= ~(H5_VFD_MPIO_POSIX | H5_VFD_MPIO_INDEPENDENT | H5_VFD_CORE_IO);
         props->flags |= H5_VFD_MPIO_COLLECTIVE;
         props->comm = *comm;
 	if (props->throttle > 0) {
@@ -225,7 +225,7 @@ h5_set_prop_file_mpio_independent (
 			(long long int)props->class);
         }
 #ifdef H5_HAVE_PARALLEL
-        props->flags &= ~(H5_VFD_MPIO_COLLECTIVE | H5_VFD_MPIO_POSIX | H5_VFD_CORE);
+        props->flags &= ~(H5_VFD_MPIO_COLLECTIVE | H5_VFD_MPIO_POSIX | H5_VFD_CORE_IO);
         props->flags |= H5_VFD_MPIO_INDEPENDENT;
         props->comm = *comm;
 #else
@@ -250,7 +250,7 @@ h5_set_prop_file_mpio_posix (
 			(long long int)props->class);
         }
 #ifdef H5_HAVE_PARALLEL
-        props->flags &= ~(H5_VFD_MPIO_COLLECTIVE | H5_VFD_MPIO_POSIX | H5_VFD_CORE);
+        props->flags &= ~(H5_VFD_MPIO_COLLECTIVE | H5_VFD_MPIO_POSIX | H5_VFD_CORE_IO);
         props->flags |= H5_VFD_MPIO_INDEPENDENT;
         props->comm = *comm;
 #else
