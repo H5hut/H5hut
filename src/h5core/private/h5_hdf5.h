@@ -718,7 +718,7 @@ hdf5_set_dataset_extent (
 	                    "dataset_id=%lld (%s), size=%llu",
 	                    (long long int)dataset_id,
 	                    hdf5_get_objname(dataset_id),
-	                    *size);
+	                    (long long unsigned int)*size);
 	if (H5Dset_extent(dataset_id, size) < 0) {
 		H5_RETURN_ERROR (
 			H5_ERR_HDF5,
@@ -873,7 +873,7 @@ static inline hid_t
 hdf5_create_string_type(
         const hsize_t len
         ) {
-	HDF5_WRAPPER_ENTER (hid_t, "len = %llu", len);
+  HDF5_WRAPPER_ENTER (hid_t, "len = %llu", (long long unsigned)len);
 	hid_t type_id = H5Tcopy (H5T_C_S1);
 	if (type_id < 0)
 		H5_RETURN_ERROR (
@@ -1003,7 +1003,7 @@ hdf5_set_chunk_property (
         ) {
 	HDF5_WRAPPER_ENTER (h5_err_t,
 	                    "plist=%lld, rank=%d, dims[0]=%llu ...",
-	                    (long long int)plist, rank, dims[0]);
+	                    (long long int)plist, rank, (long long unsigned)dims[0]);
 	if (H5Pset_chunk (plist, rank, dims) < 0)
 		H5_RETURN_ERROR (
 			H5_ERR_HDF5,
@@ -1146,7 +1146,8 @@ hdf5_set_btree_ik_property (
         ) {
 	HDF5_WRAPPER_ENTER (h5_err_t,
 	                    "fapl_id=%lld, btree_ik=%llu",
-	                    (long long int)fcpl_id, btree_ik);
+	                    (long long int)fcpl_id,
+			    (long long unsigned)btree_ik);
 	if (H5Pset_istore_k (fcpl_id, btree_ik) < 0)
 		H5_RETURN_ERROR (
 			H5_ERR_HDF5,
@@ -1164,13 +1165,16 @@ hdf5_set_alignment_property (
         ) {
 	HDF5_WRAPPER_ENTER (h5_err_t,
 	                    "plist=%lld, threshold=%llu, alignment=%llu",
-	                    (long long int)plist, threshold, alignment);
+	                    (long long int)plist, 
+			    (long long unsigned)threshold,
+			    (long long unsigned)alignment);
 	if (H5Pset_alignment (plist, threshold, alignment) < 0)
 		H5_RETURN_ERROR (
 			H5_ERR_HDF5,
 			"Cannot set alignment property to %llu "
 			"and threshold %llu",
-			alignment, threshold);
+			(long long unsigned)alignment,
+			(long long unsigned)threshold);
 	H5_RETURN (H5_SUCCESS);
 }
 
@@ -1181,12 +1185,13 @@ hdf5_set_meta_block_size (
         ) {
 	HDF5_WRAPPER_ENTER (h5_err_t,
 	                    "fapl_id=%lld, size=%llu",
-	                    (long long int)fapl_id, size);
+	                    (long long int)fapl_id,
+			    (long long unsigned)size);
 	if (H5Pset_meta_block_size (fapl_id, size) < 0)
 		H5_RETURN_ERROR (
 			H5_ERR_HDF5,
 			"Cannot set meta block size property to %llu",
-			size);
+			(long long unsigned)size);
 	H5_RETURN (H5_SUCCESS);
 }
 
@@ -1292,9 +1297,15 @@ hdf5_close_file (
 		for (ssize_t i = 0; i < max_objs; i++) {
 			hid_t object_id = obj_id_list [i];
 			h5_debug ("Open object: %lld", (long long)object_id);
+#if H5_VERSION_GE(1,12,0)
+			H5O_info_t object_info;
+			if (H5Oget_info (object_id, &object_info, H5O_INFO_ALL) < 0)
+				continue;
+#else
 			H5O_info_t object_info;
 			if (H5Oget_info (object_id, &object_info) < 0)
 				continue;
+#endif
 			switch (object_info.type) {
 			case H5O_TYPE_GROUP:
 			case H5O_TYPE_DATASET:

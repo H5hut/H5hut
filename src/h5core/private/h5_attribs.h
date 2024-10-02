@@ -99,7 +99,7 @@ h5priv_write_attrib (
 	                   attrib_name,
 	                   (long long int)attrib_type,
 	                   attrib_value,
-	                   attrib_nelem);
+	                   (long long unsigned)attrib_nelem);
 	hid_t space_id;
 	hid_t attrib_id;
 	hid_t hdf5_type;
@@ -147,7 +147,7 @@ h5priv_append_attrib (
 	                   attrib_name,
 	                   (long long int)attrib_type,
 	                   attrib_value,
-	                   attrib_nelem);
+	                   (long long unsigned)attrib_nelem);
 	h5_err_t exists;
 	TRY (exists = hdf5_attribute_exists (id, attrib_name));
 	if (exists) {

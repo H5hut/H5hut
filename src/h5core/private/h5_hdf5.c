@@ -110,10 +110,18 @@ iter_op_get_obj_type (
 			        name);
 			return H5O_TYPE_UNKNOWN;
 		}
+#if H5_VERSION_GE(1,12,0)
+		herr = H5Oget_info(obj_id, &objinfo, H5O_INFO_ALL);
+#else
 		herr = H5Oget_info(obj_id, &objinfo);
+#endif
 	}
 	else { // H5L_TYPE_HARD
+#if H5_VERSION_GE(1,12,0)
+	  herr = H5Oget_info_by_name(g_id, name, &objinfo, H5O_INFO_BASIC, H5P_DEFAULT);
+#else
 		herr = H5Oget_info_by_name(g_id, name, &objinfo, H5P_DEFAULT);
+#endif
 	}
 
 	if (herr < 0) {
@@ -245,7 +253,8 @@ hdf5_get_name_of_group_by_idx (
 	HDF5_WRAPPER_ENTER (h5_err_t,
 	                    "loc_id=%lld (%s), idx=%llu, name=%p, len=%llu",
 	                    (long long int)loc_id, hdf5_get_objname (loc_id),
-	                    idx, name, (unsigned long long)len);
+	                    (long long unsigned)idx,
+			    name, (unsigned long long)len);
 	op_data_t op_data;
 	memset (&op_data, 0, sizeof (op_data));
 	op_data.type = H5O_TYPE_GROUP;
@@ -304,7 +313,8 @@ hdf5_get_name_of_dataset_by_idx (
 	HDF5_WRAPPER_ENTER (h5_err_t,
 	                    "loc_id=%lld (%s), idx=%llu, name=%p, len=%llu",
 	                    (long long int)loc_id, hdf5_get_objname (loc_id),
-	                    idx, name, (unsigned long long)len);
+	                    (long long unsigned)idx,
+			    name, (unsigned long long)len);
 	op_data_t op_data;
 	memset (&op_data, 0, sizeof (op_data));
 	op_data.type = H5O_TYPE_DATASET;
