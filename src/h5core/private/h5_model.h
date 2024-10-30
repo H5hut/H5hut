@@ -135,6 +135,12 @@ h5priv_map_enum_to_normalized_type (
 	case H5_STRING_T:
 		ret_value = H5_STRING;
 		break;
+	case H5_INT8_T: 
+		ret_value = H5_INT8;
+		break;
+	case H5_UINT8_T:
+		ret_value = H5_UINT8;
+		break;
 	case H5_INT16_T:
 		ret_value = H5_INT16;
 		break;
@@ -203,6 +209,12 @@ h5priv_normalize_type (
 			} else {
 				ret_value = H5_UINT16;
 			}
+		} else if (tsize==1) {
+			if (tsign == H5T_SGN_2) {
+				ret_value = H5_INT8;
+			} else {
+				ret_value = H5_UINT8;
+			}
 		}
 		break;
 	case H5T_FLOAT:
@@ -262,6 +274,13 @@ h5priv_map_hdf5_type_to_enum (
 				ret_value = H5_INT16_T;
 			} else {
 				ret_value = H5_UINT16_T;
+			}
+		} else if (tsize==1) {
+			if (tsign == H5T_SGN_2) {
+				ret_value = H5_INT8_T;
+			}
+			else {
+				ret_value = H5_UINT8_T;
 			}
 		} else {
 			ret_value = H5_STRING_T;

@@ -13,6 +13,8 @@
 #include <hdf5.h>
 #include "h5core/h5_types.h"
 
+#define H5_INT8			H5T_NATIVE_INT8
+#define H5_UINT8		H5T_NATIVE_UINT8
 #define H5_INT16                H5T_NATIVE_INT16
 #define H5_UINT16		H5T_NATIVE_UINT16
 #define H5_INT32                H5T_NATIVE_INT32

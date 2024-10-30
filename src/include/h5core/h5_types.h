@@ -30,6 +30,8 @@ typedef int MPI_Datatype;
 
 typedef enum  {
 	H5_STRING_T,
+	H5_INT8_T,
+	H5_UINT8_T,
 	H5_INT16_T,
 	H5_UINT16_T,
 	H5_INT32_T,
