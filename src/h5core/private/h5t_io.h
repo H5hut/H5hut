@@ -122,10 +122,10 @@ h5priv_find_proc_to_write (
 // TODO move this to appropriate place
 typedef struct {
 	int (*compare) (const void *p_a, const void *p_b);
-} comparison_fn_t;
+} h5hut_comparison_fn_t;
 
 void * linsearch (const void *key, void *array, size_t count, size_t size,
- comparison_fn_t compare);
+ h5hut_comparison_fn_t compare);
 
 unsigned int
 hidxmap_compute_hval (

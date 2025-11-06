@@ -251,7 +251,7 @@ linsearch (
 	void *array,
 	size_t count,
 	size_t size,
-	comparison_fn_t compare
+	h5hut_comparison_fn_t compare
 	) {
 	void* pointer = array;
 	for (size_t i = 0; i < count; i++) {
@@ -307,7 +307,7 @@ check_multiple_vtx_writes (
 
 	h5_glb_idx_t* key = NULL;
 
-//	comparison_fn_t comp_func;
+//	h5hut_comparison_fn_t comp_func;
 //	comp_func.compare = sort_glb_idx;
 	for (int i = 0; i < map->num_items; i++) {
 		h5_glb_idx_t* retval = NULL;

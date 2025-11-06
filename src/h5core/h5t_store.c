@@ -135,7 +135,7 @@ h5tpriv_find_edge_list (
 	) {
 	H5_PRIV_API_ENTER (h5_err_t, "list=%p", list);
 
-	comparison_fn_t comp_func;
+	h5hut_comparison_fn_t comp_func;
 	comp_func.compare = compare_edge_list_elem;
 	// need linear search because we want to know first elem that hits.
 	h5t_edge_list_elem_t* retval = linsearch (elem, list->items ,list->num_items, sizeof (*list->items), comp_func);
