@@ -20,7 +20,9 @@ option(H5hut_WITH_FORTRAN "Enable fortran support, currently unimplemented" OFF)
 #--------------------------------------------------------
 # dependencies
 #--------------------------------------------------------
-find_package(HDF5 REQUIRED)
+if (NOT HDF5_FOUND)
+  find_package(HDF5 CONFIG REQUIRED)
+endif()
 
 if (H5hut_WITH_MPI)
   find_package(MPI REQUIRED)
@@ -110,7 +112,7 @@ endif()
 #--------------------------------------------------------
 # API compatibility setting, support 1.12 onwards
 #--------------------------------------------------------
-if (${HDF5_VERSION} VERSION_GREATER_EQUAL 1.12)
+if ("${HDF5_VERSION}" VERSION_GREATER_EQUAL 1.12)
   target_compile_definitions(H5hut PUBLIC H5_USE_120_API)
 endif()
 
