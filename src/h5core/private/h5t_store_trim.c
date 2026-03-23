@@ -55,7 +55,7 @@ bisect_edge (
 	// get all elements sharing the given edge
 	TRY (h5tpriv_find_te2 (m, face_idx, elem_idx, &retval));
 	// check weather one of the found elements has been refined
-	size_t i;
+	h5_int32_t i;
 	for (i = 0; i < retval->num_items; i++) {
 //		// check if it is shared boundary edge that has been refined already
 //		if (num_b_edges > 0) {

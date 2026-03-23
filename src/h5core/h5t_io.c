@@ -101,7 +101,7 @@ write_vertices (
 	assert (m->num_leaf_levels > 0);
 
 	// quick hack for serial case (for the time being writes are serial anyway)
-	for (size_t i = 0; i < m->num_leaf_levels; i++) {
+	for (h5_lvl_idx_t i = 0; i < m->num_leaf_levels; i++) {
 		m->num_glb_vertices[i] = m->num_loc_vertices[i];
 	}
 
@@ -254,7 +254,7 @@ linsearch (
 	comparison_fn_t compare
 	) {
 	void* pointer = array;
-	for (int i = 0; i < count; i++) {
+	for (size_t i = 0; i < count; i++) {
 		if (compare.compare(key,pointer) == 0) {
 			return pointer;
 			break;
@@ -337,6 +337,9 @@ h5priv_find_proc_to_write (
 			H5_LEAVE (H5t_get_proc (m->octree, m->chunks->chunks[i].oct_idx));
 		}
 	}
+#else
+	UNUSED_ARGUMENT (m);
+	UNUSED_ARGUMENT (elem_idx);
 #endif
 	H5_RETURN (H5_SUCCESS);
 }
@@ -1604,7 +1607,7 @@ h5tpriv_read_mesh (
 	                     hidxmap_cmp, hidxmap_compute_hval, NULL));
 
 	int num_vertices = h5tpriv_ref_elem_get_num_vertices (m);
-	for (size_t idx = 0; idx < num_interior_elems; idx++) {
+	for (h5_loc_idx_t idx = 0; idx < num_interior_elems; idx++) {
 		h5_glb_idx_t* vertices = h5tpriv_get_glb_elem_vertices (m, glb_elems, idx);
 		for (int i = 0; i < num_vertices; i++) {
 			// add index temporarly to map ...
@@ -1637,7 +1640,7 @@ h5tpriv_read_mesh (
 	}
 	TRY (h5priv_hdestroy (&htab));
 	h5priv_sort_idxmap (map);
-	for (h5_loc_idx_t i = 0; i < map->num_items; i++) {
+	for (size_t i = 0; i < map->num_items; i++) {
 		map->items[i].loc_idx = i;
 	}
 	TRY (read_vertices (m, map));
@@ -1666,7 +1669,7 @@ h5tpriv_read_mesh (
         ) {
 	H5_PRIV_API_ENTER (h5_err_t, "m=%p", m);
 	// local and global counts are identical in serial case
-	for (size_t lvl = 0; lvl < m->num_leaf_levels; lvl++) {
+	for (h5_lvl_idx_t lvl = 0; lvl < m->num_leaf_levels; lvl++) {
 		m->num_loc_vertices[lvl] = m->num_glb_vertices[lvl];
 		m->num_interior_elems[lvl] = m->num_glb_elems[lvl];
 		m->num_interior_leaf_elems[lvl] = m->num_glb_leaf_elems[lvl];
@@ -2592,7 +2595,7 @@ h5tpriv_read_chunked_mesh (
 			hidxmap_cmp, hidxmap_compute_hval, NULL));
 
 	int num_vertices = h5tpriv_ref_elem_get_num_vertices (m);
-	for (size_t idx = 0; idx < num_interior_elems; idx++) {
+	for (h5_loc_idx_t idx = 0; idx < num_interior_elems; idx++) {
 		h5_glb_idx_t* vertices = h5tpriv_get_glb_elem_vertices (m, glb_elems, idx);
 
 		for (int i = 0; i < num_vertices; i++) {
@@ -2635,7 +2638,9 @@ h5tpriv_read_chunked_mesh (
 
 	TRY (h5priv_mpi_barrier (m->f->props->comm));
 	m->timing.measure[m->timing.next_time++] = MPI_Wtime();
-#endif	
+#else
+	UNUSED_ARGUMENT (m);
+#endif
 	H5_RETURN (H5_SUCCESS);
 }
 
@@ -2681,10 +2686,10 @@ read_elems_part (
 	TRY (dspace_id = hdf5_create_dataspace (1, &num_glb_elems, NULL));
 	hsize_t hstride = 1;
 	H5S_seloper_t seloper = H5S_SELECT_SET; // first selection
-	for (hsize_t i = 0; i < dim; i++) {
+	for (h5_glb_idx_t i = 0; i < dim; i++) {
 		hsize_t hstart = elem_indices[i];
 		hsize_t hcount = 1;
-		while (elem_indices[i]+1 == elem_indices[i+1] && i < dim) {
+		while ((i + 1) < dim && elem_indices[i] + 1 == elem_indices[i + 1]) {
 			i++; hcount++;
 		}
 		if (hstart+hcount > num_glb_elems) {
@@ -2758,7 +2763,7 @@ h5tpriv_read_mesh_part (
 	                     hidxmap_cmp, hidxmap_compute_hval, NULL));
 
 	int num_vertices = h5tpriv_ref_elem_get_num_vertices (m);
-	for (size_t idx = 0; idx < num_interior_elems; idx++) {
+	for (h5_loc_idx_t idx = 0; idx < num_interior_elems; idx++) {
 		h5_glb_idx_t* vertices = h5tpriv_get_glb_elem_vertices (m, glb_elems, idx);
 		for (int i = 0; i < num_vertices; i++) {
 			// add index temporarly to map ...
@@ -2775,7 +2780,7 @@ h5tpriv_read_mesh_part (
 	}
 	TRY (h5priv_hdestroy (&htab));
 	h5priv_sort_idxmap (map);
-	for (h5_loc_idx_t i = 0; i < map->num_items; i++) {
+	for (size_t i = 0; i < map->num_items; i++) {
 		map->items[i].loc_idx = i;
 	}
 	TRY (read_vertices (m, map));
@@ -2796,4 +2801,3 @@ h5tpriv_read_mesh_part (
 #endif
 	H5_RETURN (H5_SUCCESS);
 }
-

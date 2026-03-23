@@ -396,7 +396,7 @@ h5u_set_view_length (
 		H5_LEAVE (H5_SUCCESS);
 	}
 
-	if (start < 0 || length < 0 || start+length > total) 
+	if (start < 0 || length < 0 || (h5_size_t)(start + length) > total)
                 H5_RETURN_ERROR (
 			H5_ERR_INVAL,
 			"Invalid view: start=%lld, length=%lld, total=%lld",
@@ -773,4 +773,3 @@ h5u_get_chunk (
 	h5_info ("Found chunk size of %lld particles", (long long)*size);
 	H5_RETURN (H5_SUCCESS);
 }
-

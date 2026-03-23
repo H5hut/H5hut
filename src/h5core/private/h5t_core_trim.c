@@ -44,8 +44,9 @@ set_vertex_flags (
         ) {
 	H5_LOC_ELEM_T* cell;
 	h5_loc_idx_t cell_idx;
+	UNUSED_ARGUMENT (num_all_partition);
 	list->flags = 0;
-	for (size_t i = 0; i < list->num_items; i++) {
+	for (h5_int32_t i = 0; i < list->num_items; i++) {
 		cell_idx = h5tpriv_get_elem_idx (list->items[i]);
 		cell = (H5_LOC_ELEM_T*)m->loc_elems + cell_idx;
 		list->flags |= cell->flags;
@@ -67,7 +68,7 @@ set_vertex_flags (
 		// entity not on current level
 	}
 	if (list->flags & H5_GEOBORDER_ENTITY) {
-		for (size_t i = 0; i < list->num_items; i++) {
+		for (h5_int32_t i = 0; i < list->num_items; i++) {
 			h5_loc_idx_t face_idx = h5tpriv_get_face_idx (list->items[i]);
 			cell_idx = h5tpriv_get_elem_idx (list->items[i]);
 			cell = (H5_LOC_ELEM_T*)m->loc_elems + cell_idx;
@@ -94,8 +95,9 @@ set_edge_flags (
         ) {
 	H5_LOC_ELEM_T* cell;
 	h5_loc_idx_t cell_idx;
+	UNUSED_ARGUMENT (num_all_partition);
 	list->flags = 0;
-	for (size_t i = 0; i < list->num_items; i++) {
+	for (h5_int32_t i = 0; i < list->num_items; i++) {
 		cell_idx = h5tpriv_get_elem_idx (list->items[i]);
 		cell = (H5_LOC_ELEM_T*)m->loc_elems + cell_idx;
 		list->flags |= cell->flags;
@@ -201,7 +203,7 @@ update_internal_structs (
 	// set flags for all entities
 
 	// traverse all entries in tv
-	unsigned int i = 0;
+	h5_loc_idx_t i = 0;
 	h5_loc_idlist_t* entry;
 	h5_loc_idx_t num_vertices_all_partition = 0;
 	while ((entry = h5tpriv_traverse_tv (m, &i))) {
@@ -209,9 +211,9 @@ update_internal_structs (
 	}
 
 	// traverse all entries in te
-	i = 0;
+	unsigned int te_i = 0;
 	h5_loc_idx_t num_edges_all_partition = 0;
-	while ((entry = h5tpriv_traverse_te (m, &i))) {
+	while ((entry = h5tpriv_traverse_te (m, &te_i))) {
 		set_edge_flags (m, entry, &num_edges_all_partition);
 	}
 
@@ -230,8 +232,8 @@ update_internal_structs (
 	}
 
 	h5_loc_idlist_t* list;
-	i = 1;
-	while ((list = h5tpriv_traverse_te (m, &i))) {
+	unsigned int dbg_te_i = 1;
+	while ((list = h5tpriv_traverse_te (m, &dbg_te_i))) {
 		h5_debug ("edge id: %llx, flags: %llu",
 		          (long long unsigned)list->items[0], (long long unsigned)list->flags);
 	}

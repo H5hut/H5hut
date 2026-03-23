@@ -1117,9 +1117,11 @@ h5t_end_store_ckd_elems (
 //		TRY (m->methods->store->end_store_elems (m));
 	}
 #endif
+#else
+	UNUSED_ARGUMENT (m);
 #endif
-	H5_RETURN (H5_SUCCESS);
-}
+		H5_RETURN (H5_SUCCESS);
+	}
 
 #ifdef WITH_PARALLEL_H5GRID
 h5_err_t
