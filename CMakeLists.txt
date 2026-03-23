@@ -93,12 +93,16 @@ add_library(H5hut ${H5hut_SRCS})
 #--------------------------------------------------------
 # immediate dependencies
 #--------------------------------------------------------
-target_link_libraries(H5hut hdf5::hdf5)
+if (TARGET hdf5-shared)
+  target_link_libraries(H5hut hdf5-shared)
+else()
+  target_link_libraries(H5hut hdf5-static)
+endif()
 
 #--------------------------------------------------------
 # Parallel compilation settings
 #--------------------------------------------------------
-if(HDF5_IS_PARALLEL)
+if(HDF5_ENABLE_PARALLEL)
   if (NOT H5hut_WITH_MPI)
     find_package(MPI REQUIRED)
     message("Warning, MPI was not enabled, but hdf5 uses MPI already, parallel support enabled")
@@ -106,7 +110,7 @@ if(HDF5_IS_PARALLEL)
   target_compile_definitions(H5hut PUBLIC PARALLEL_IO)
   target_link_libraries(H5hut MPI::MPI_C)
 else()
-  message("HDF5_IS_PARALLEL not found, Parallel IO will not be enabled")
+  message("HDF5_ENABLE_PARALLEL not found, Parallel IO will not be enabled")
 endif()
 
 #--------------------------------------------------------
