@@ -681,7 +681,7 @@ release_mtagset (
         h5t_tagset_t* tagset
         ) {
 	H5_PRIV_FUNC_ENTER (h5_err_t, "tagset=%p", tagset);
-	unsigned int i;
+	h5_loc_idx_t i;
 	// release per element structures
 	for (i = 0; i < tagset->num_interior_elems; i++) {
 		if (tagset->elems[i] != NULL) {
@@ -895,4 +895,3 @@ h5t_remove_tag (
 	TRY (ret_value = remove_tag (tagset, face_id, elem_idx));
 	H5_RETURN (ret_value);
 }
-

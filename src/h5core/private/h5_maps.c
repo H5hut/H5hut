@@ -80,7 +80,7 @@ h5priv_insert_strlist (
 		TRY (grow_strlist (list, size));
 	}
 	h5_strlist_t* l = *list;
-	if (idx == -1) {
+	if (idx == (size_t)-1) {
 		idx = l->num_items;
 	} else {
 		memmove (

@@ -196,6 +196,7 @@ init_glb_elems_struct_chk (
         int num_chk
         ) {
 	H5_PRIV_FUNC_ENTER (h5_err_t, "m=%p", m);
+	UNUSED_ARGUMENT (glb_elems);
 #if defined(WITH_PARALLEL_H5GRID)
 	h5_chk_idx_t chk_idx = -1;
 	h5_chk_size_t num_elems = -1;
@@ -239,6 +240,9 @@ init_glb_elems_struct_chk (
 
 	}
 #endif
+	UNUSED_ARGUMENT (m);
+	UNUSED_ARGUMENT (chk_list);
+	UNUSED_ARGUMENT (num_chk);
 	H5_RETURN (H5_SUCCESS);
 }
 

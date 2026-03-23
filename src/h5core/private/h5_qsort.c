@@ -36,6 +36,7 @@ static char sccsid[] = "@(#)qsort.c	8.1 (Berkeley) 6/4/93";
 #endif /* LIBC_SCCS and not lint */
 #include <sys/cdefs.h>
 
+#include <stdint.h>
 #include <stdlib.h>
 
 #include "private/h5_qsort.h"
@@ -64,7 +65,7 @@ static inline void       swapfunc(char *, char *, int, int);
 		} while (--i > 0);                              \
 }
 
-#define SWAPINIT(a, es) swaptype = ((char *)a - (char *)0) % sizeof(long) || \
+#define SWAPINIT(a, es) swaptype = ((uintptr_t)(a)) % sizeof(long) || \
                                    es % sizeof(long) ? 2 : es == sizeof(long) ? 0 : 1;
 
 static inline void
@@ -115,7 +116,8 @@ swapfunc(char* a, char* b, int n, int swaptype) {
 #endif
 			{
 				char *pa, *pb, *pc, *pd, *pl, *pm, *pn;
-				int d, r, swaptype, swap_cnt;
+				int d, swaptype, swap_cnt;
+				size_t r;
 
 loop:   SWAPINIT(a, es);
 				swap_cnt = 0;
@@ -177,17 +179,17 @@ loop:   SWAPINIT(a, es);
 				}
 
 				pn = (char *)a + n * es;
-				r = min(pa - (char *)a, pb - pa);
+				r = min((size_t)(pa - (char *)a), (size_t)(pb - pa));
 				vecswap(a, pb - r, r);
-				r = min(pd - pc, pn - pd - es);
+				r = min((size_t)(pd - pc), (size_t)(pn - pd - es));
 				vecswap(pb, pn - r, r);
-				if ((r = pb - pa) > es)
+				if ((r = (size_t)(pb - pa)) > es)
 #ifdef I_AM_QSORT_R
 					h5priv_qsort_r(a, r / es, es, thunk, cmp);
 #else
 					h5priv_qsort(a, r / es, es, cmp);
 #endif
-				if ((r = pd - pc) > es) {
+				if ((r = (size_t)(pd - pc)) > es) {
 					/* Iterate rather than recurse to save stack space */
 					a = pn - r;
 					n = r / es;

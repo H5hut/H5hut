@@ -125,6 +125,7 @@ get_loc_elem_vertex_indices_of_array (
         const h5_loc_idx_t elem_idx,
         const h5_loc_elem_t* loc_elems
         ) {
+	UNUSED_ARGUMENT (m);
 	return ((h5_loc_tet_t*)loc_elems)[elem_idx].vertex_indices;
 }
 
@@ -181,6 +182,7 @@ static h5_glb_elem_t*
 alloc_glb_elems (
         h5t_mesh_t* const m, const size_t size
         ) {
+	UNUSED_ARGUMENT (m);
 	H5_PRIV_FUNC_ENTER (h5_glb_elem_p, "m=%p, size=%zu", m, size);
 	h5_glb_elem_p buf;
 	TRY (buf = h5_calloc (size, sizeof(h5_glb_tet_t)));
@@ -724,4 +726,3 @@ struct h5t_access_methods h5tpriv_access_tetm_methods = {
 	is_boundary_facet,
 	is_boundary_face,
 };
-

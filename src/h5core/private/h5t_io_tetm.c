@@ -200,6 +200,10 @@ init_glb_elems_struct_chk (
         int num_chk
         ) {
 	H5_PRIV_FUNC_ENTER (h5_err_t, "m=%p", m);
+	UNUSED_ARGUMENT (m);
+	UNUSED_ARGUMENT (glb_elems);
+	UNUSED_ARGUMENT (chk_list);
+	UNUSED_ARGUMENT (num_chk);
 	H5_LEAVE (H5_ERR_NOT_IMPLEMENTED);
 	// TODO just copy from readwrite_trim and replace 3 indices with 4...
 	H5_RETURN (H5_SUCCESS);

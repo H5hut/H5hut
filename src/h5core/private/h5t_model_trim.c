@@ -158,6 +158,7 @@ h5t_add_triangle_mesh (
 	) {
         h5_file_p f = (h5_file_p)fh;
 	H5_CORE_API_ENTER (h5_err_t, "f=%p, name=%s, mesh=%p", f, name, mesh);
+	UNUSED_ARGUMENT (num_weights);
 	CHECK_WRITABLE_MODE (f);
 	h5_err_t exists;
 	TRY (exists = h5priv_link_exists (
@@ -210,6 +211,7 @@ h5t_add_chunked_triangle_mesh(
         h5t_mesh_t** mesh
         ) {
 	H5_CORE_API_ENTER (h5_err_t, "f=%p, name=%s, mesh=%p", (void*)fh, name, mesh);
+	UNUSED_ARGUMENT (num_weights);
 #ifdef WITH_PARALLEL_H5GRID
         h5_file_p f = (h5_file_p)fh;
 	int size = -1;
@@ -258,6 +260,10 @@ h5t_add_chunked_triangle_mesh(
 	m->num_leaf_levels = 0;
 	TRY (h5tpriv_add_level (m));
 	m->mesh_changed = 1;
+#else
+	UNUSED_ARGUMENT (fh);
+	UNUSED_ARGUMENT (name);
+	UNUSED_ARGUMENT (mesh);
 #endif
 	H5_RETURN (H5_SUCCESS);
 }

@@ -90,9 +90,9 @@ _get_max_dimensions (
 	b->k_max = 0;
 
 	for ( proc = 0; proc < f->nprocs; proc++, p++ ) {
-		if ( p->i_end > b->i_max ) b->i_max = p->i_end;
-		if ( p->j_end > b->j_max ) b->j_max = p->j_end;
-		if ( p->k_end > b->k_max ) b->k_max = p->k_end;
+		if (p->i_end >= 0 && (h5_size_t)p->i_end > b->i_max) b->i_max = (h5_size_t)p->i_end;
+		if (p->j_end >= 0 && (h5_size_t)p->j_end > b->j_max) b->j_max = (h5_size_t)p->j_end;
+		if (p->k_end >= 0 && (h5_size_t)p->k_end > b->k_max) b->k_max = (h5_size_t)p->k_end;
 	}
 }
 
@@ -771,7 +771,7 @@ h5b_3d_set_grid (
 	                   (long long unsigned)j,
 	                   (long long unsigned)k);
 	check_iteration_handle_is_valid (f);
-	if (i*j*k != f->nprocs) {
+	if ((h5_size_t)(i * j * k) != (h5_size_t)f->nprocs) {
 		H5_RETURN_ERROR (
 		        H5_ERR_INVAL,
 			"Grid dimensions (%lld,%lld,%lld) do not multiply "
@@ -1055,4 +1055,3 @@ h5b_get_field_info (
 		     name, field_rank, field_dims, elem_rank, type));
 	H5_RETURN (H5_SUCCESS);
 }
-

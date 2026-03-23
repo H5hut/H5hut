@@ -140,7 +140,7 @@ h5u_read_dataset (
 
 		/* make sure the memory space selected by the view has
 		 * enough capacity for the read */
-		if (nmem >= nread) {
+		if (nmem >= 0 && (hsize_t)nmem >= nread) {
 			memspace_id = f->u->memshape;
 		} else {
 			/* the view selection is too small?
