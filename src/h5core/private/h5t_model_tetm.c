@@ -191,6 +191,10 @@ h5t_add_chunked_tetrahedral_mesh (
         const h5_weight_t num_weights,
         h5t_mesh_t** mesh
         ) {
+	UNUSED_ARGUMENT (fh);
+	UNUSED_ARGUMENT (name);
+	UNUSED_ARGUMENT (num_weights);
+	UNUSED_ARGUMENT (mesh);
 	H5_CORE_API_ENTER (h5_err_t, "f=%p, name=%s, mesh=%p", (void*)fh, name, mesh);
 #ifdef WITH_PARALLEL_H5GRID
         h5_file_p f = (h5_file_p)fh;

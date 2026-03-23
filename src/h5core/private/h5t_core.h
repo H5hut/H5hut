@@ -133,7 +133,7 @@ h5tpriv_find_td2 (
 static inline h5_loc_idlist_t*
 h5tpriv_traverse_tv (
         h5t_mesh_t* const m,
-        unsigned int* i
+        h5_loc_idx_t* i
         ) {
 	assert (i != NULL);
 	if (*i >= m->num_loc_vertices[m->num_loaded_levels-1]) {

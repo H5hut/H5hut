@@ -192,7 +192,7 @@ check_coords (
 	h5b_fdata_t *b = f->b;
         switch (rank) {
         case 0: {
-                if (n_coords != b->i_max + 1)
+                if (n_coords != (h5_int64_t)(b->i_max + 1))
                         h5_warn ("Coordinate array length (%lld) "
                                  "does not match X dimension (%lld)",
                                  (long long)n_coords,
@@ -201,14 +201,14 @@ check_coords (
         }
 
         case 1:
-                if (n_coords != b->j_max + 1)
+                if (n_coords != (h5_int64_t)(b->j_max + 1))
                         h5_warn ("Coordinate array length (%lld) "
                                  "does not match Y dimension (%lld)",
                                  (long long)n_coords,
                                  (long long)b->j_max + 1);
                 break;
         case 2:
-                if (n_coords != b->k_max + 1)
+                if (n_coords != (h5_int64_t)(b->k_max + 1))
                         h5_warn ("Coordinate array length (%lld) "
                                  "does not match Z dimension (%lld)",
                                  (long long)n_coords,
@@ -289,5 +289,4 @@ h5b_get_3d_field_coords (
 
         H5_RETURN (H5_SUCCESS);
 }
-
 

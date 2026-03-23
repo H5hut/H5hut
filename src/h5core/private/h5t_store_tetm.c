@@ -65,7 +65,7 @@ bisect_edge (
 	/*
 	   check wether one of the cells in retval has been refined
 	 */
-	size_t i;
+	h5_int32_t i;
 	for (i = 0; i < retval->num_items; i++) {
 		h5_loc_id_t kids[2] = {-1,-1};
 		TRY (h5tpriv_get_loc_entity_children (m, retval->items[i], kids));

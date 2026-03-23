@@ -26,7 +26,7 @@
 #define H5_LOC_ELEM_T   h5_loc_tet_t
 
 
-static inline void
+static inline void __attribute__((unused))
 set_vertex_flags (
         h5t_mesh_t* const m,
         h5_loc_idx_t face_idx,          // in
@@ -72,7 +72,7 @@ set_vertex_flags (
 /*
    edges are either interior-, border or front-entities
  */
-static inline void
+static inline void __attribute__((unused))
 set_edge_flags (
         h5t_mesh_t* const m,
         h5_loc_idx_t face_idx,          // in
@@ -120,7 +120,7 @@ set_edge_flags (
 /*
    triangle are either interior-, border or front-entities
  */
-static inline void
+static inline void __attribute__((unused))
 set_triangle_flags (
         h5t_mesh_t* const m,
         h5_loc_idx_t face_idx,          // in
@@ -182,26 +182,26 @@ alloc_tv (
 	H5_RETURN (H5_SUCCESS);
 }
 
-static inline h5_err_t
+static inline h5_err_t __attribute__((unused))
 reset_flags (
         h5t_mesh_t* const m
         ) {
 	// traverse all entries in tv
-	unsigned int i = 0;
+	h5_loc_idx_t i = 0;
 	h5_loc_idlist_t* entry;
 	while ((entry = h5tpriv_traverse_tv (m, &i))) {
 		entry->flags = 0;
 	}
 
 	// traverse all entries in te
-	i = 0;
-	while ((entry = h5tpriv_traverse_te (m, &i))) {
+	unsigned int te_i = 0;
+	while ((entry = h5tpriv_traverse_te (m, &te_i))) {
 		entry->flags = 0;
 	}
 
 	// traverse all entries in td
-	i = 0;
-	while ((entry = h5tpriv_traverse_td (m, &i))) {
+	unsigned int td_i = 0;
+	while ((entry = h5tpriv_traverse_td (m, &td_i))) {
 		entry->flags = 0;
 	}
 
