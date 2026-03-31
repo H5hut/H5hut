@@ -1664,7 +1664,7 @@ sort_array (
 			key, points, nbr_points, split, nbr_in_split);
 
 	// sort in z
-	comparison_fn_t compare;
+	h5hut_comparison_fn_t compare;
 	compare.compare = compare_points_z;
 	split[0] = points;
 	qsort (points, nbr_points, sizeof (*points), sort_points_z);
