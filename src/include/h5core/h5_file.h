@@ -38,6 +38,10 @@ h5_set_prop_file_mpio_independent (
         h5_prop_t, MPI_Comm* const);
 
 h5_err_t
+h5_set_prop_file_coll_metadata (
+        h5_prop_t, const h5_int64_t);
+
+h5_err_t
 h5_set_prop_file_mpio_posix (
         h5_prop_t, MPI_Comm* const);
 
