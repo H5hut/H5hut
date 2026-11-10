@@ -1103,6 +1103,42 @@ hdf5_set_dxpl_mpio_property (
 			" the dataset transfer property list.");
 	H5_RETURN (H5_SUCCESS);
 }
+
+#if H5_VERSION_GE(1,10,0)
+static inline h5_err_t
+hdf5_set_all_coll_metadata_ops (
+        hid_t fapl_id,
+        hbool_t enable
+        ) {
+	HDF5_WRAPPER_ENTER (h5_err_t,
+			    "fapl_id=%lld, enable=%d",
+			    (long long int)fapl_id, (int)enable);
+	if (H5Pset_all_coll_metadata_ops (fapl_id, enable) < 0)
+		H5_RETURN_ERROR (
+			H5_ERR_HDF5,
+			"%s",
+			"Cannot enable collective metadata read operations"
+			" in the file access property list.");
+	H5_RETURN (H5_SUCCESS);
+}
+
+static inline h5_err_t
+hdf5_set_coll_metadata_write (
+        hid_t fapl_id,
+        hbool_t enable
+        ) {
+	HDF5_WRAPPER_ENTER (h5_err_t,
+			    "fapl_id=%lld, enable=%d",
+			    (long long int)fapl_id, (int)enable);
+	if (H5Pset_coll_metadata_write (fapl_id, enable) < 0)
+		H5_RETURN_ERROR (
+			H5_ERR_HDF5,
+			"%s",
+			"Cannot enable collective metadata write operations"
+			" in the file access property list.");
+	H5_RETURN (H5_SUCCESS);
+}
+#endif
 #endif
 
 static inline h5_err_t

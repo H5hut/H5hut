@@ -112,6 +112,37 @@ H5SetPropFileMPIOIndependent (
         H5_API_RETURN (h5_set_prop_file_mpio_independent (prop, comm));
 }
 
+/**
+   Enable or disable collective HDF5 metadata operations (metadata reads via
+   \c H5Pset_all_coll_metadata_ops and metadata writes via
+   \c H5Pset_coll_metadata_write) for files opened with this property list.
+   Requires HDF5 >= 1.10; the setting is ignored with older HDF5 versions.
+   Metadata operations are independent (the HDF5 default) unless this
+   property is set.  Independent of the data transfer mode selected with
+   \ref H5SetPropFileMPIOCollective() / \ref H5SetPropFileMPIOIndependent().
+
+   \return \c H5_SUCCESS on success
+   \return \c H5_FAILURE on error
+
+   \see H5SetPropFileMPIOCollective()
+   \see H5SetPropFileMPIOIndependent()
+
+   \note
+   | Release    | Change                               |
+   | :------    | :-----				      |
+   | \c 2.0.0   | Function introduced in this release. |
+*/
+static inline h5_err_t
+H5SetPropFileCollMetadata (
+        h5_prop_t prop,	    	///< [in,out] identifier for file property list
+	const h5_int64_t enabled ///< [in] enable (non-zero) or disable (zero)
+        ) {
+        H5_API_ENTER (h5_err_t,
+                      "prop=%p, enabled=%lld",
+                      (void*)prop, (long long int)enabled);
+        H5_API_RETURN (h5_set_prop_file_coll_metadata (prop, enabled));
+}
+
 #if H5_VERSION_LE(1,8,12)
 /**
   Stores MPI IO communicator information to given file property list. If used in 

@@ -130,6 +130,13 @@ mpi_init (
                 TRY (hdf5_set_dxpl_mpio_property (f->props->xfer_prop,
                                                   H5FD_MPIO_COLLECTIVE) );
 	}
+#if H5_VERSION_GE(1,10,0)
+	if (f->props->coll_metadata) {
+		h5_info ("Enabling collective metadata operations");
+		TRY (hdf5_set_all_coll_metadata_ops (f->props->access_prop, 1));
+		TRY (hdf5_set_coll_metadata_write (f->props->access_prop, 1));
+	}
+#endif
 #endif
 #ifdef H5_USE_LUSTRE
 	if (f->flags & H5_FS_LUSTRE) {
@@ -230,6 +237,30 @@ h5_set_prop_file_mpio_independent (
         props->comm = *comm;
 #else
 	h5_info ("Setting MPIO independent property ignored in serial H5hut");
+#endif
+        H5_RETURN (H5_SUCCESS);
+}
+
+h5_err_t
+h5_set_prop_file_coll_metadata (
+        h5_prop_t _props,
+        const h5_int64_t enabled
+        ) {
+        h5_prop_file_t* props = (h5_prop_file_t*)_props;
+        H5_CORE_API_ENTER (h5_err_t,
+                           "props=%p, enabled=%lld",
+                           props, (long long int)enabled);
+
+        if (props->class != H5_PROP_FILE) {
+                H5_RETURN_ERROR (
+			H5_ERR_INVAL,
+			"Invalid property class: %lld",
+			(long long int)props->class);
+        }
+#ifdef H5_HAVE_PARALLEL
+        props->coll_metadata = enabled;
+#else
+	h5_info ("Setting collective metadata property ignored in serial H5hut");
 #endif
         H5_RETURN (H5_SUCCESS);
 }

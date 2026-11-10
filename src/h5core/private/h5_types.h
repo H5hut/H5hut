@@ -37,6 +37,7 @@ struct h5_prop_file {                   // file property
         h5_int64_t align;               // HDF5 alignment
 	h5_int64_t increment;		// increment for core vfd
         h5_int64_t throttle;
+        h5_int64_t coll_metadata;	// collective metadata operations (HDF5 >= 1.10)
 #ifdef H5_HAVE_PARALLEL
         MPI_Comm comm;
 #endif
