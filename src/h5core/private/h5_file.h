@@ -10,6 +10,9 @@
 #define H5_VFD_MPIO_INDEPENDENT 0x00000020
 #define H5_VFD_MPIO_COLLECTIVE  0x00000040
 #define H5_VFD_CORE_IO		0x00000080
+// NB: not H5_VFD_SUBFILING - that name is taken by HDF5's driver class
+// value in H5FDpublic.h
+#define H5_VFD_SUBFILING_IO	0x00000100
 
 #define H5_FLUSH_FILE		0x00001000
 #define H5_FLUSH_ITERATION	0x00002000

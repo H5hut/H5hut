@@ -10,6 +10,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <fcntl.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "h5core/h5_log.h"
@@ -85,6 +86,21 @@ mpi_init (
 	TRY (f->props->access_prop = hdf5_create_property(H5P_FILE_ACCESS));
 
 	/* select the HDF5 VFD */
+	// Environment override: H5HUT_VFD=subfiling selects the HDF5
+	// subfiling VFD without any code change in the calling application.
+	// The subfiling geometry is controlled with the H5FD_SUBFILING_* and
+	// H5FD_IOC_* environment variables, like in the openPMD HDF5 layer.
+	const char* vfd_env = getenv ("H5HUT_VFD");
+	if (vfd_env && strcmp (vfd_env, "subfiling") == 0) {
+		h5_info ("H5HUT_VFD=subfiling: selecting subfiling VFD");
+		// The MPIO_INDEPENDENT bit is left untouched: it selects the
+		// dataset transfer mode (independent vs collective), which is
+		// orthogonal to the VFD.
+		f->props->flags &= ~(H5_VFD_MPIO_COLLECTIVE |
+				     H5_VFD_MPIO_POSIX |
+				     H5_VFD_CORE_IO);
+		f->props->flags |= H5_VFD_SUBFILING_IO;
+	}
 #if H5_VERSION_LE(1,8,12)
 	if ((f->props->flags & H5_VFD_MPIO_POSIX)) {
 		h5_info("Selecting MPI-POSIX VFD");
@@ -112,7 +128,39 @@ mpi_init (
 	}
 #else
 	// VFD_MPIO_POSIX has been removed in HDF5 1.8.13
-        if ((f->props->flags & H5_VFD_CORE_IO)) {
+        if ((f->props->flags & H5_VFD_SUBFILING_IO)) {
+#if H5_VERSION_GE(1,14,0) && defined(H5_HAVE_SUBFILING_VFD)
+		int provided = MPI_THREAD_SINGLE;
+		if (MPI_Query_thread (&provided) != MPI_SUCCESS ||
+		    provided < MPI_THREAD_MULTIPLE) {
+			H5_RETURN_ERROR (
+				H5_ERR_INVAL,
+				"%s",
+				"The HDF5 subfiling VFD requires that the "
+				"application initialized MPI with "
+				"MPI_Init_thread (MPI_THREAD_MULTIPLE).");
+		}
+		h5_info("Selecting subfiling VFD");
+		// The subfiling VFD is stacked on the MPI-IO VFD.  The
+		// dataset transfer mode follows the requested mode:
+		// collective unless the caller selected independent transfer
+		// (H5SetPropFileMPIOIndependent / H5HUT_VFD env combination).
+		TRY (hdf5_set_fapl_mpio_property (f->props->access_prop,
+                                                  f->props->comm, MPI_INFO_NULL));
+		TRY (hdf5_set_fapl_subfiling (f->props->access_prop));
+                TRY (hdf5_set_dxpl_mpio_property (f->props->xfer_prop,
+                                                  (f->props->flags & H5_VFD_MPIO_INDEPENDENT)
+                                                  ? H5FD_MPIO_INDEPENDENT
+                                                  : H5FD_MPIO_COLLECTIVE) );
+#else
+		H5_RETURN_ERROR (
+			H5_ERR_INVAL,
+			"%s",
+			"Subfiling VFD requested, but the linked HDF5 library "
+			"was not built with subfiling support (HDF5 >= 1.14 "
+			"compiled with ENABLE_SUBFILING_VFD).");
+#endif
+        } else if ((f->props->flags & H5_VFD_CORE_IO)) {
 		h5_info("Selecting CORE VFD");
                 TRY (hdf5_set_fapl_core (f->props->access_prop,
                                          f->props->align, 1));
@@ -237,6 +285,37 @@ h5_set_prop_file_mpio_independent (
         props->comm = *comm;
 #else
 	h5_info ("Setting MPIO independent property ignored in serial H5hut");
+#endif
+        H5_RETURN (H5_SUCCESS);
+}
+
+h5_err_t
+h5_set_prop_file_subfiling_vfd (
+        h5_prop_t _props,
+        MPI_Comm* comm
+        ) {
+        h5_prop_file_t* props = (h5_prop_file_t*)_props;
+        H5_CORE_API_ENTER (h5_err_t, "props=%p, comm=%p", props, comm);
+
+        if (props->class != H5_PROP_FILE) {
+                H5_RETURN_ERROR (
+			H5_ERR_INVAL,
+			"Invalid property class: %lld",
+			(long long int)props->class);
+        }
+#ifdef H5_HAVE_PARALLEL
+        props->flags &= ~(H5_VFD_MPIO_COLLECTIVE |
+			  H5_VFD_MPIO_INDEPENDENT |
+			  H5_VFD_MPIO_POSIX |
+			  H5_VFD_CORE_IO);
+        props->flags |= H5_VFD_SUBFILING_IO;
+        props->comm = *comm;
+	if (props->throttle > 0) {
+		h5_warn ("Throttling is not permitted with subfiling VFD. Reset throttling.");
+		props->throttle = 0;
+	}
+#else
+	h5_info ("Setting subfiling VFD property ignored in serial H5hut");
 #endif
         H5_RETURN (H5_SUCCESS);
 }

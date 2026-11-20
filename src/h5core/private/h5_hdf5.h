@@ -10,6 +10,8 @@
 #ifndef __PRIVATE_H5_HDF5_H
 #define __PRIVATE_H5_HDF5_H
 
+#include <stdlib.h>
+
 #include <hdf5.h>
 
 #include "h5core/h5_types.h"
@@ -1083,6 +1085,44 @@ hdf5_set_fapl_mpiposix_property (
 			"%s",
 			"Cannot store IO communicator information to"
 			" the file access property list.");
+	H5_RETURN (H5_SUCCESS);
+}
+#endif
+
+#if H5_VERSION_GE(1,14,0) && defined(H5_HAVE_SUBFILING_VFD)
+static inline h5_err_t
+hdf5_set_fapl_subfiling (
+        hid_t fapl_id
+        ) {
+	HDF5_WRAPPER_ENTER (h5_err_t,
+	                    "fapl_id=%lld",
+	                    (long long int)fapl_id);
+	// Stack the subfiling VFD on the MPI-IO VFD already stored in the
+	// property list. The subfiling configuration (IOC selection, stripe
+	// size, stripe count, IOC thread pool size) is left at the HDF5
+	// defaults so that the H5FD_SUBFILING_* and H5FD_IOC_* environment
+	// variables are honored.
+	H5FD_subfiling_config_t config;
+	if (H5Pget_fapl_subfiling (fapl_id, &config) < 0)
+		H5_RETURN_ERROR (
+			H5_ERR_HDF5,
+			"%s",
+			"Cannot get the default subfiling configuration.");
+	// A single-value H5FD_SUBFILING_IOC_SELECTION_CRITERIA environment
+	// setting only supplies the stride N of the EVERY_NTH_RANK
+	// strategy - the strategy itself must be selected in the fapl
+	// (like the openPMD HDF5 engine does with its
+	// "ioc_selection: every_nth_rank" config).  Set it when the
+	// environment variable is present; without it, keep the HDF5
+	// default of one IOC per node.
+	if (getenv ("H5FD_SUBFILING_IOC_SELECTION_CRITERIA") != NULL)
+		config.shared_cfg.ioc_selection = SELECT_IOC_EVERY_NTH_RANK;
+	if (H5Pset_fapl_subfiling (fapl_id, &config) < 0)
+		H5_RETURN_ERROR (
+			H5_ERR_HDF5,
+			"%s",
+			"Cannot set the subfiling VFD on the "
+			"file access property list.");
 	H5_RETURN (H5_SUCCESS);
 }
 #endif

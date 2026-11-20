@@ -113,6 +113,50 @@ H5SetPropFileMPIOIndependent (
 }
 
 /**
+   Stores MPI IO communicator information to given file property list and
+   selects the HDF5 subfiling VFD. If used in \ref H5OpenFile(), data is
+   written through HDF5's subfiling infrastructure: the MPI ranks are
+   partitioned into I/O concentrators (IOCs) and the logical file is striped
+   across a set of subfiles, each owned by one IOC.
+
+   Requires HDF5 >= 1.14 compiled with subfiling support
+   (\c H5_HAVE_SUBFILING_VFD); \ref H5OpenFile() fails with an error if the
+   linked HDF5 library lacks it. The application must have initialized MPI
+   with \c MPI_THREAD_MULTIPLE.  The dataset transfer mode is collective
+   unless independent transfer is also selected with
+   \ref H5SetPropFileMPIOIndependent().
+
+   The subfiling geometry (IOC selection and stride, stripe size, stripe
+   count, IOC thread pool size) is taken from the HDF5 defaults and can be
+   overridden with the \c H5FD_SUBFILING_IOC_SELECTION_CRITERIA,
+   \c H5FD_SUBFILING_STRIPE_SIZE and \c H5FD_IOC_THREAD_POOL_SIZE
+   environment variables - the same variables the openPMD HDF5 engine uses.
+
+   The subfiling VFD can also be selected without any code change by
+   setting the \c H5HUT_VFD environment variable to \c "subfiling".
+
+   \return \c H5_SUCCESS on success
+   \return \c H5_FAILURE on error
+
+   \see H5SetPropFileMPIOCollective()
+   \see H5SetPropFileMPIOIndependent()
+   \see H5SetPropFileCoreVFD()
+
+   \note
+   | Release    | Change                               |
+   | :------    | :-----				      |
+   | \c 2.0.0   | Function introduced in this release. |
+*/
+static inline h5_err_t
+H5SetPropFileSubfiling (
+        h5_prop_t prop,	    ///< [in,out] identifier for file property list
+        MPI_Comm* comm	    ///< [in] MPI communicator
+        ) {
+        H5_API_ENTER (h5_err_t, "prop=%p, comm=%p", (void*)prop, comm);
+        H5_API_RETURN (h5_set_prop_file_subfiling_vfd (prop, comm));
+}
+
+/**
    Enable or disable collective HDF5 metadata operations (metadata reads via
    \c H5Pset_all_coll_metadata_ops and metadata writes via
    \c H5Pset_coll_metadata_write) for files opened with this property list.

@@ -16,6 +16,7 @@ cmake_policy(SET CMP0074 NEW)
 #--------------------------------------------------------
 option(H5hut_WITH_MPI "Enable Parallel IO support" ON)
 option(H5hut_WITH_FORTRAN "Enable fortran support, currently unimplemented" OFF)
+option(H5hut_WITH_TESTS "Build the H5hut test programs" OFF)
 
 #--------------------------------------------------------
 # dependencies
@@ -129,6 +130,14 @@ target_include_directories(H5hut
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${PUBLIC_INCLUDE}>
     $<INSTALL_INTERFACE:include>  # <prefix>/include
 )
+
+#--------------------------------------------------------
+# tests
+#--------------------------------------------------------
+if (H5hut_WITH_TESTS)
+  enable_testing()
+  add_subdirectory(test)
+endif()
 
 target_sources(H5hut
   PUBLIC
